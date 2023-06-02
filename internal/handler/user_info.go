@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
-	"github.com/tdfxlyh/go-gin-api/internal/caller"
 	"net/http"
 )
 
@@ -36,7 +36,7 @@ func (h *UserInfoHandler) Process() {
 }
 
 func (h *UserInfoHandler) ReadDataFromDB() {
-	userList := make([]*models.User, 0)
-	caller.LyhTestDB.Debug().Table("user").Find(&userList)
-	h.UserInfoList = userList
+	if cronloader.UserInfoList != nil {
+		h.UserInfoList = cronloader.UserInfoList
+	}
 }
