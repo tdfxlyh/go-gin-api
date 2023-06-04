@@ -4,38 +4,34 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
-	"net/http"
+	"github.com/tdfxlyh/go-gin-api/internal/model/res"
 )
 
 type UserInfoHandler struct {
 	Ctx *gin.Context
 
-	UserInfoList []*models.User
+	UserList map[string][]*models.User
 }
 
 func NewUserInfoHandler(ctx *gin.Context) *UserInfoHandler {
 	return &UserInfoHandler{
-		Ctx:          ctx,
-		UserInfoList: make([]*models.User, 0),
+		Ctx:      ctx,
+		UserList: make(map[string][]*models.User),
 	}
 }
 
 func UserInfo(ctx *gin.Context) {
 	h := NewUserInfoHandler(ctx)
 
-	h.Process()
+	h.GetData()
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"user_list": h.UserInfoList,
-	})
+	res.Success(ctx, h.UserList, "success")
 }
 
-func (h *UserInfoHandler) Process() {
-	h.ReadDataFromDB()
-}
-
-func (h *UserInfoHandler) ReadDataFromDB() {
+func (h *UserInfoHandler) GetData() {
 	if cronloader.UserInfoList != nil {
-		h.UserInfoList = cronloader.UserInfoList
+		h.UserList = map[string][]*models.User{
+			"tab_list": cronloader.UserInfoList,
+		}
 	}
 }
