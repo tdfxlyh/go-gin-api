@@ -4,6 +4,9 @@ go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/jasonlvhit/gocron v0.0.1
+	golang.org/x/crypto v0.9.0
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/gen v0.3.22
 	gorm.io/gorm v1.25.1
@@ -20,7 +23,6 @@ require (
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
-	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -33,7 +35,6 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
@@ -9,7 +8,7 @@ import (
 )
 
 type UserInfoHandler struct {
-	Ctx context.Context
+	Ctx *gin.Context
 
 	UserInfoList []*models.User
 }

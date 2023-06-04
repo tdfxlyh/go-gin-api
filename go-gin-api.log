@@ -1,5 +1,7 @@
 [GIN-debug] GET    /ping                     --> github.com/tdfxlyh/go-gin-api/internal/handler.Ping (3 handlers)
-[GIN-debug] GET    /user_info                --> github.com/tdfxlyh/go-gin-api/internal/handler.UserInfo (3 handlers)
+[GIN-debug] POST   /register                 --> github.com/tdfxlyh/go-gin-api/internal/handler/user.Register (3 handlers)
+[GIN-debug] POST   /login                    --> github.com/tdfxlyh/go-gin-api/internal/handler/user.Login (3 handlers)
+[GIN-debug] GET    /user_info                --> github.com/tdfxlyh/go-gin-api/internal/handler.UserInfo (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
