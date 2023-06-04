@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/internal/handler"
 	"github.com/tdfxlyh/go-gin-api/internal/handler/user"
-	"github.com/tdfxlyh/go-gin-api/middleware"
+	"github.com/tdfxlyh/go-gin-api/internal/middleware"
 )
 
 func CollectRoute(r *gin.Engine) *gin.Engine {
@@ -15,7 +15,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.POST("/login", user.Login)
 
 	// 获取用户信息
-	r.GET("/user_info", middleware.AuthMiddleware(), handler.UserInfo)
+	r.GET("/user_info", middleware.AuthMiddleware(), user.UserInfo)
 
 	return r
 }
