@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 )
 
 // GetStuStr 格式化对象输出
@@ -18,13 +17,26 @@ func GetStuStr(obj interface{}) string {
 	return string(bs)
 }
 
-// RandString 随机名字
-func RandString(n int) string {
-	var letters = []byte("abcdefghijklmnopqrstuvwxyz")
-	result := make([]byte, n)
+func Int64Ptr(val int64) *int64 {
+	return &val
+}
 
-	for i := range result {
-		result[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(result)
+func Int32Ptr(val int32) *int32 {
+	return &val
+}
+
+func IntPtr(val int) *int {
+	return &val
+}
+
+func Float64Ptr(val float64) *float64 {
+	return &val
+}
+
+func Float32Ptr(val float32) *float32 {
+	return &val
+}
+
+func StringPtr(val string) *string {
+	return &val
 }
