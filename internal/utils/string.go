@@ -3,7 +3,7 @@ package utils
 import "strings"
 
 // SubString 包含中文的子字符串
-func SubString(source string, start int, end int) string {
+func SubString(source string, start, end int) string {
 	var unicodeStr = []rune(source)
 	length := len(unicodeStr)
 	if start >= end {
@@ -32,9 +32,9 @@ func StringLen(str string) int {
 }
 
 // StringIndex 包含中文的子字符串所在的位置
-func StringIndex(str, substr string) int {
+func StringIndex(str, subStr string) int {
 	// 子串在字符串的字节位置
-	result := strings.Index(str, substr)
+	result := strings.Index(str, subStr)
 	if result > 0 {
 		prefix := []byte(str)[0:result]
 		rs := []rune(string(prefix))
