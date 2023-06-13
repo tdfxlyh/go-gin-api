@@ -43,6 +43,7 @@ func Register(ctx *gin.Context) {
 	}
 	res.Success(h.Ctx, nil, "注册成功")
 }
+
 func (h *RegisterHandler) CheckReq() {
 	var reqUser = models.User{}
 	h.Ctx.Bind(&reqUser)
