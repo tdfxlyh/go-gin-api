@@ -13,7 +13,12 @@ func Success(ctx *gin.Context, data interface{}) *RespStu {
 	return nil
 }
 
-func Fail(ctx *gin.Context, code output.ErrorCode, customMsg string) *RespStu {
+func Fail(ctx *gin.Context, code output.ErrorCode) *RespStu {
+	ctx.JSON(http.StatusOK, output.NewErrorResp(code, ""))
+	return nil
+}
+
+func FailWithMsg(ctx *gin.Context, code output.ErrorCode, customMsg string) *RespStu {
 	ctx.JSON(http.StatusOK, output.NewErrorResp(code, customMsg))
 	return nil
 }

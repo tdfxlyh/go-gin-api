@@ -35,15 +35,15 @@ func Login(ctx *gin.Context) *res.RespStu {
 
 	if h.CheckReq(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Login-CheckReq] fail, err=%s", h.Err))
-		return res.Fail(h.Ctx, output.StatusCodeParamsError, "")
+		return res.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	if h.CheckDB(); h.Err != nil {
-		return res.Fail(h.Ctx, output.StatusCodeDBError, "")
+		return res.Fail(h.Ctx, output.StatusCodeDBError)
 	}
 	// 获取token
 	if h.PackToken(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Login-GetToken] err=%s", h.Err))
-		return res.Fail(h.Ctx, output.StatusCodeSeverException, "")
+		return res.Fail(h.Ctx, output.StatusCodeSeverException)
 	}
 	return res.Success(h.Ctx, h.Resp)
 }
