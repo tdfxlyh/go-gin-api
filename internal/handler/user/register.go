@@ -7,8 +7,8 @@ import (
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
 	"github.com/tdfxlyh/go-gin-api/internal/model/res"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
+	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
 )
 
 type RegisterHandler struct {
@@ -27,21 +27,20 @@ func NewRegisterHandler(ctx *gin.Context) *RegisterHandler {
 	}
 }
 
-func Register(ctx *gin.Context) {
+func Register(ctx *gin.Context) *res.RespStu {
 	h := NewRegisterHandler(ctx)
 	// 校验参数
 	if h.CheckReq(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Register-CheckReq] params fail, err=%s", h.Err))
-		res.Fail(h.Ctx, fmt.Sprintf("params fail, err=%s", h.Err), nil)
-		return
+		return res.Fail(h.Ctx, output.StatusCodeParamsError, "")
 	}
 	// 创建用户
 	if h.CreateUser(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Register-CreateUser] fail, err=%s", h.Err))
-		res.Response(ctx, http.StatusUnprocessableEntity, 500, nil, h.Err.Error())
-		return
+		return res.Fail(h.Ctx, output.StatusCodeSeverException, "")
+
 	}
-	res.Success(h.Ctx, nil, "注册成功")
+	return res.Success(h.Ctx, "注册成功")
 }
 
 func (h *RegisterHandler) CheckReq() {

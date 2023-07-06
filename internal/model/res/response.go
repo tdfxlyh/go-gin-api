@@ -2,21 +2,18 @@ package res
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"net/http"
 )
 
-func Response(ctx *gin.Context, httpStatus int, code int, data interface{}, msg string) {
-	ctx.JSON(httpStatus, gin.H{
-		"code": code,
-		"data": data,
-		"msg":  msg,
-	})
+type RespStu struct{}
+
+func Success(ctx *gin.Context, data interface{}) *RespStu {
+	ctx.JSON(http.StatusOK, output.NewStdResp(data))
+	return nil
 }
 
-func Success(ctx *gin.Context, data interface{}, msg string) {
-	Response(ctx, http.StatusOK, 200, data, msg)
-}
-
-func Fail(ctx *gin.Context, msg string, data interface{}) {
-	Response(ctx, http.StatusOK, 400, data, msg)
+func Fail(ctx *gin.Context, code output.ErrorCode, customMsg string) *RespStu {
+	ctx.JSON(http.StatusOK, output.NewErrorResp(code, customMsg))
+	return nil
 }

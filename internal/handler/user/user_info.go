@@ -20,12 +20,12 @@ func NewUserInfoHandler(ctx *gin.Context) *UserInfoHandler {
 	}
 }
 
-func UserInfo(ctx *gin.Context) {
+func UserInfo(ctx *gin.Context) *res.RespStu {
 	h := NewUserInfoHandler(ctx)
 
 	h.GetData()
 
-	res.Success(ctx, h.UserList, "success")
+	return res.Success(ctx, h.UserList)
 }
 
 func (h *UserInfoHandler) GetData() {

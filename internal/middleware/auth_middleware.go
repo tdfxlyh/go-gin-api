@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"net/http"
 	"strings"
 )
@@ -18,10 +19,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		//validate token formate
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"code": 401,
-				"msg":  "权限不足",
-			})
+			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, ""))
 			ctx.Abort()
 			return
 		}
@@ -31,10 +29,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		token, claims, err := caller.ParseToken(tokenString)
 
 		if err != nil || !token.Valid {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"code": 401,
-				"msg":  "权限不足",
-			})
+			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, ""))
 			ctx.Abort()
 			return
 		}
@@ -47,10 +42,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 验证用户是否存在
 		if user.ID == 0 {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"code": 401,
-				"msg":  "权限不足",
-			})
+			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, ""))
 			ctx.Abort()
 			return
 		}

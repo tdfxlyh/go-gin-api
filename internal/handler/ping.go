@@ -2,11 +2,11 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/tdfxlyh/go-gin-api/internal/model/res"
 )
 
-func Ping(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
+func Ping(ctx *gin.Context) *res.RespStu {
+	return res.Success(ctx, gin.H{
 		"message": "pong",
 	})
 }
