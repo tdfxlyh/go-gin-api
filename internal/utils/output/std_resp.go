@@ -10,19 +10,15 @@ type StdResp struct {
 }
 
 func NewStdResp(data interface{}) (resp *StdResp) {
-	// data 为空时用 {}
 	if data == nil || IsNil(data) {
 		data = map[string]string{}
 	}
-
-	resp = &StdResp{
+	return &StdResp{
 		Prompts: StatusCodeSuccess.Prompts(),
 		Status:  StatusCodeSuccess.Status(),
 		Message: StatusCodeSuccess.Message(),
 		Data:    data,
 	}
-
-	return
 }
 
 func IsNil(i interface{}) bool {
