@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
-	"github.com/tdfxlyh/go-gin-api/internal/model/res"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"golang.org/x/crypto/bcrypt"
@@ -27,25 +26,25 @@ func NewRegisterHandler(ctx *gin.Context) *RegisterHandler {
 	}
 }
 
-func Register(ctx *gin.Context) *res.RespStu {
+func Register(ctx *gin.Context) *output.RespStu {
 	h := NewRegisterHandler(ctx)
 	// 校验参数
 	if h.CheckReq(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Register-CheckReq] params fail, err=%s", h.Err))
-		return res.Fail(h.Ctx, output.StatusCodeParamsError)
+		return output.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	// 判断用户是否已经存在
 	if h.CheckUser(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Register-CheckUser] err=%s", h.Err))
-		return res.FailWithMsg(h.Ctx, output.StatusCodeDBError, "用户已存在")
+		return output.FailWithMsg(h.Ctx, output.StatusCodeDBError, "用户已存在")
 	}
 
 	// 创建用户
 	if h.CreateUser(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Register-CreateUser] fail, err=%s", h.Err))
-		return res.Fail(h.Ctx, output.StatusCodeSeverException)
+		return output.Fail(h.Ctx, output.StatusCodeSeverException)
 	}
-	return res.Success(h.Ctx, "注册成功")
+	return output.Success(h.Ctx, "注册成功")
 }
 
 func (h *RegisterHandler) CheckReq() {

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
-	"github.com/tdfxlyh/go-gin-api/internal/model/res"
+	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 )
 
 type UserInfoHandler struct {
@@ -20,12 +20,12 @@ func NewUserInfoHandler(ctx *gin.Context) *UserInfoHandler {
 	}
 }
 
-func UserInfo(ctx *gin.Context) *res.RespStu {
+func UserInfo(ctx *gin.Context) *output.RespStu {
 	h := NewUserInfoHandler(ctx)
 
 	h.GetData()
 
-	return res.Success(ctx, h.UserList)
+	return output.Success(ctx, h.UserList)
 }
 
 func (h *UserInfoHandler) GetData() {
