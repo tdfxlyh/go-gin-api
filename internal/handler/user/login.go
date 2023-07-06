@@ -5,10 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
-	"github.com/tdfxlyh/go-gin-api/internal/model/res"
+	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"golang.org/x/crypto/bcrypt"
 	"log"
-	"net/http"
 )
 
 type LoginHandler struct {
@@ -30,25 +29,22 @@ func NewLoginHandler(ctx *gin.Context) *LoginHandler {
 	}
 }
 
-func Login(ctx *gin.Context) {
+func Login(ctx *gin.Context) *output.RespStu {
 	h := NewLoginHandler(ctx)
 
 	if h.CheckReq(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Login-CheckReq] fail, err=%s", h.Err))
-		res.Response(ctx, http.StatusUnprocessableEntity, 422, nil, h.Err.Error())
-		return
+		return output.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	if h.CheckDB(); h.Err != nil {
-		res.Response(ctx, http.StatusUnprocessableEntity, 400, nil, h.Err.Error())
-		return
+		return output.Fail(h.Ctx, output.StatusCodeDBError)
 	}
 	// 获取token
 	if h.PackToken(); h.Err != nil {
 		fmt.Println(fmt.Sprintf("[Login-GetToken] err=%s", h.Err))
-		res.Response(h.Ctx, http.StatusUnprocessableEntity, 500, nil, "系统异常")
-		return
+		return output.Fail(h.Ctx, output.StatusCodeSeverException)
 	}
-	res.Success(h.Ctx, h.Resp, "success")
+	return output.Success(h.Ctx, h.Resp)
 }
 
 func (h *LoginHandler) CheckReq() {
