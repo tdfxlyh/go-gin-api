@@ -37,7 +37,7 @@ func Login(ctx *gin.Context) *output.RespStu {
 		return output.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	if h.CheckDB(); h.Err != nil {
-		return output.Fail(h.Ctx, output.StatusCodeDBError)
+		return output.FailWithMsg(h.Ctx, output.StatusCodeParamsError, h.Err.Error())
 	}
 	// 获取token
 	if h.PackToken(); h.Err != nil {
