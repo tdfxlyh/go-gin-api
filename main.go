@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
 	"github.com/tdfxlyh/go-gin-api/internal/constdef"
+	"github.com/tdfxlyh/go-gin-api/internal/cronloader"
 	"github.com/tdfxlyh/go-gin-api/internal/routers"
 )
 

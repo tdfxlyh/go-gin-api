@@ -2,8 +2,8 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/tdfxlyh/go-gin-api/cronloader"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
+	"github.com/tdfxlyh/go-gin-api/internal/cronloader"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 )
 
