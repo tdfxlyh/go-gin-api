@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// AuthMiddleware 权限中间件: 用户登录才可以通过
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// 获取 authorization header
