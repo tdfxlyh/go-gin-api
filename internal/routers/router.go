@@ -9,6 +9,10 @@ import (
 )
 
 func CollectRoute(r *gin.Engine) *gin.Engine {
+	// 全局捕获异常
+	r.Use(middleware.ExceptionMiddleware)
+
+	// ping
 	r.GET("/ping", dec(handler.Ping))
 
 	// 注册、登录
