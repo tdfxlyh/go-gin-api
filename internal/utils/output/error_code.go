@@ -9,17 +9,17 @@ type IErrorCode interface {
 type ErrorCode int
 
 const (
-	StatusCodeSuccess        ErrorCode = 0
-	StatusCodeParamsError    ErrorCode = 40001
-	StatusCodeNoPermission   ErrorCode = 40002
-	StatusCodeNotLoggedIn    ErrorCode = 40003
-	StatusCodeSeverException ErrorCode = 50000
-	StatusCodeDBError        ErrorCode = 50001
-	StatusCodeRedisError     ErrorCode = 50002
-	StatusCodeRPCError       ErrorCode = 50003
-	StatusCodeTooBusy        ErrorCode = 50004
-	StatusCodeImgDataFail    ErrorCode = 50005
-	StatusCodeContentTooLong ErrorCode = 50006
+	StatusCodeSuccess        ErrorCode = 0     // 成功
+	StatusCodeParamsError    ErrorCode = 40001 // 请求参数错误
+	StatusCodeNoPermission   ErrorCode = 40002 // 无权限
+	StatusCodeNotLoggedIn    ErrorCode = 40003 // 未登录
+	StatusCodeSeverException ErrorCode = 50000 // 服务器内部错误
+	StatusCodeDBError        ErrorCode = 50001 // 数据库错误
+	StatusCodeRedisError     ErrorCode = 50002 // redis错误
+	StatusCodeRPCError       ErrorCode = 50003 // rpc错误
+	StatusCodeTooBusy        ErrorCode = 50004 // 操作太频繁了吧，请稍微休息下
+	StatusCodeImgDataFail    ErrorCode = 50005 // 图片转码失败
+	StatusCodeContentTooLong ErrorCode = 50006 // 超过最大字数限制，请删减后再发布
 )
 
 func (e ErrorCode) Prompts() string {
