@@ -43,7 +43,14 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 验证用户是否存在
 		if user.ID == 0 {
-			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, ""))
+			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, "用户不存在"))
+			ctx.Abort()
+			return
+		}
+
+		// 用户是否被注销
+		if user.Status != 0 {
+			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, "用户已注销"))
 			ctx.Abort()
 			return
 		}
