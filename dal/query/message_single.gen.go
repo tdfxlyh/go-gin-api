@@ -53,7 +53,7 @@ type messageSingle struct {
 	ID                 field.Int64  // 主键id
 	SenderUserID       field.Int64  // 消息发送方
 	ReceiverUserID     field.Int64  // 消息接收方
-	MessageType        field.Int64  // 消息类型
+	MessageType        field.Int64  // 消息类型 1:文本 2:图片 3:音频 4:视频 5:文件
 	Content            field.String // 消息内容
 	Extra              field.String // 扩展信息
 	ReadStatusInfo     field.Int32  // 判断接收者 0:未读 1:已读
