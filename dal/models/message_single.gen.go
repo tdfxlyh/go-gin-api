@@ -15,7 +15,7 @@ type MessageSingle struct {
 	ID                 int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`                        // 主键id
 	SenderUserID       int64     `gorm:"column:sender_user_id;not null" json:"sender_user_id"`                     // 消息发送方
 	ReceiverUserID     int64     `gorm:"column:receiver_user_id;not null" json:"receiver_user_id"`                 // 消息接收方
-	MessageType        int64     `gorm:"column:message_type" json:"message_type"`                                  // 消息类型
+	MessageType        int64     `gorm:"column:message_type" json:"message_type"`                                  // 消息类型 1:文本 2:图片 3:音频 4:视频 5:文件
 	Content            string    `gorm:"column:content" json:"content"`                                            // 消息内容
 	Extra              string    `gorm:"column:extra" json:"extra"`                                                // 扩展信息
 	ReadStatusInfo     int32     `gorm:"column:read_status_info" json:"read_status_info"`                          // 判断接收者 0:未读 1:已读
