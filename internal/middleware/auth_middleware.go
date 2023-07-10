@@ -39,10 +39,10 @@ func AuthMiddleware() gin.HandlerFunc {
 		userId := claims.UserID
 
 		var user models.User
-		caller.LyhTestDB.Debug().Table("user").Where("id=?", userId).First(&user)
+		caller.LyhTestDB.Debug().Table("user").Where("uid=?", userId).First(&user)
 
 		// 验证用户是否存在
-		if user.ID == 0 {
+		if user.UID == 0 {
 			ctx.JSON(http.StatusUnauthorized, output.NewErrorResp(output.StatusCodeNotLoggedIn, "用户不存在"))
 			ctx.Abort()
 			return

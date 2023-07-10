@@ -1,6 +1,6 @@
 CREATE TABLE `user` (
-    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `name` varchar(64) COMMENT '姓名',
+    `uid` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `user_name` varchar(64) COMMENT '姓名',
     `phone` varchar(64) COMMENT '手机号',
     `password` varchar(64) COMMENT '密码',
     `extra` text COMMENT '扩展信息',
