@@ -30,7 +30,7 @@ CREATE TABLE `message_single` (
    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
    `sender_user_id` bigint(20) NOT NULL COMMENT '消息发送方',
    `receiver_user_id` bigint(20) NOT NULL COMMENT '消息接收方',
-   `message_type` bigint(20) COMMENT '消息类型',
+   `message_type` bigint(20) COMMENT '消息类型 1:文本 2:图片 3:音频 4:视频 5:文件',
    `content` text COMMENT '消息内容',
    `extra` text COMMENT '扩展信息',
    `read_status_info` int DEFAULT 0 COMMENT '判断接收者 0:未读 1:已读',
