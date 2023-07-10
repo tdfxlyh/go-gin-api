@@ -13,7 +13,7 @@ import (
 type RegisterHandler struct {
 	Ctx *gin.Context
 
-	Name     string
+	UserName string
 	Phone    string
 	Password string
 
@@ -54,7 +54,7 @@ func (h *RegisterHandler) CheckReq() {
 	fmt.Printf("%s", utils.GetStuStr(reqUser))
 
 	//获取参数
-	h.Name = reqUser.Name
+	h.UserName = reqUser.UserName
 	h.Phone = reqUser.Phone
 	h.Password = reqUser.Password
 
@@ -67,8 +67,8 @@ func (h *RegisterHandler) CheckReq() {
 		h.Err = fmt.Errorf("password long < 6")
 		return
 	}
-	if len(h.Name) == 0 {
-		h.Name = utils.RandString(5)
+	if len(h.UserName) == 0 {
+		h.UserName = utils.RandString(5)
 	}
 }
 
@@ -76,7 +76,7 @@ func (h *RegisterHandler) CheckUser() {
 	// 判断手机号是否已经存在
 	var user models.User
 	caller.LyhTestDB.Where("phone = ?", h.Phone).First(&user)
-	if user.ID != 0 {
+	if user.UID != 0 {
 		h.Err = fmt.Errorf("user exist")
 		return
 	}
@@ -89,7 +89,7 @@ func (h *RegisterHandler) CreateUser() {
 		return
 	}
 	newUser := &models.User{
-		Name:     h.Name,
+		UserName: h.UserName,
 		Phone:    h.Phone,
 		Password: string(hasePassword),
 	}
