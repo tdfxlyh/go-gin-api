@@ -12,14 +12,14 @@ const TableNameUser = "user"
 
 // User mapped from table <user>
 type User struct {
-	UID        int64     `gorm:"column:uid;primaryKey;autoIncrement:true" json:"uid"`                      // 主键id
-	UserName   string    `gorm:"column:user_name" json:"user_name"`                                        // 姓名
-	Phone      string    `gorm:"column:phone" json:"phone"`                                                // 手机号
-	Password   string    `gorm:"column:password" json:"password"`                                          // 密码
-	Extra      string    `gorm:"column:extra" json:"extra"`                                                // 扩展信息
-	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"` // 创建时间
-	ModifyTime time.Time `gorm:"column:modify_time;not null;default:CURRENT_TIMESTAMP" json:"modify_time"` // 修改时间
-	Status     int32     `gorm:"column:status" json:"status"`                                              // 0存在，1删除
+	UID        int64     `gorm:"column:uid;primaryKey;autoIncrement:true" json:"uid"`                         // 主键id
+	UserName   string    `gorm:"column:user_name" json:"user_name"`                                           // 姓名
+	Phone      string    `gorm:"column:phone" json:"phone"`                                                   // 手机号
+	Password   string    `gorm:"column:password" json:"password"`                                             // 密码
+	Extra      string    `gorm:"column:extra" json:"extra"`                                                   // 扩展信息
+	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP(3)" json:"create_time"` // 创建时间
+	ModifyTime time.Time `gorm:"column:modify_time;not null;default:CURRENT_TIMESTAMP(3)" json:"modify_time"` // 修改时间
+	Status     int32     `gorm:"column:status" json:"status"`                                                 // 0存在，1删除
 }
 
 // TableName User's table name
