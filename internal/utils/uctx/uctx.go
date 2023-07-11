@@ -12,12 +12,12 @@ func User(ctx *gin.Context) models.User {
 	return models.User{}
 }
 
-func UserID(ctx *gin.Context) int64 {
-	return User(ctx).ID
+func UID(ctx *gin.Context) int64 {
+	return User(ctx).UID
 }
 
-func Name(ctx *gin.Context) string {
-	return User(ctx).Name
+func UserName(ctx *gin.Context) string {
+	return User(ctx).UserName
 }
 
 func Phone(ctx *gin.Context) string {
