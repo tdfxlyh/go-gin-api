@@ -12,16 +12,16 @@ const TableNameFriendRelation = "friend_relation"
 
 // FriendRelation mapped from table <friend_relation>
 type FriendRelation struct {
-	ID            int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`                        // 主键id
-	UserID        int64     `gorm:"column:user_id;not null" json:"user_id"`                                   // 自己用户id
-	OtherUserID   int64     `gorm:"column:other_user_id;not null" json:"other_user_id"`                       // 朋友用户id
-	VerifyMessage string    `gorm:"column:verify_message" json:"verify_message"`                              // 验证消息
-	Notes         string    `gorm:"column:notes" json:"notes"`                                                // 备注
-	RelaStatus    int64     `gorm:"column:rela_status" json:"rela_status"`                                    // 关系状态-1:请求中,2:好友
-	Extra         string    `gorm:"column:extra" json:"extra"`                                                // 扩展信息
-	CreateTime    time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"` // 创建时间
-	ModifyTime    time.Time `gorm:"column:modify_time;not null;default:CURRENT_TIMESTAMP" json:"modify_time"` // 修改时间
-	Status        int32     `gorm:"column:status" json:"status"`                                              // 0存在，1删除
+	ID            int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`                           // 主键id
+	UserID        int64     `gorm:"column:user_id;not null" json:"user_id"`                                      // 自己用户id
+	OtherUserID   int64     `gorm:"column:other_user_id;not null" json:"other_user_id"`                          // 朋友用户id
+	VerifyMessage string    `gorm:"column:verify_message" json:"verify_message"`                                 // 验证消息
+	Notes         string    `gorm:"column:notes" json:"notes"`                                                   // 备注
+	RelaStatus    int64     `gorm:"column:rela_status" json:"rela_status"`                                       // 关系状态-1:请求中,2:好友
+	Extra         string    `gorm:"column:extra" json:"extra"`                                                   // 扩展信息
+	CreateTime    time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP(3)" json:"create_time"` // 创建时间
+	ModifyTime    time.Time `gorm:"column:modify_time;not null;default:CURRENT_TIMESTAMP(3)" json:"modify_time"` // 修改时间
+	Status        int32     `gorm:"column:status" json:"status"`                                                 // 0存在，1删除
 }
 
 // TableName FriendRelation's table name

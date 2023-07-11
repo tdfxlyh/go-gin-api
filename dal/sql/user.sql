@@ -4,8 +4,8 @@ CREATE TABLE `user` (
     `phone` varchar(64) COMMENT '手机号',
     `password` varchar(64) COMMENT '密码',
     `extra` text COMMENT '扩展信息',
-    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+    `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     `status` int DEFAULT 0 COMMENT '0存在，1删除',
     PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -19,8 +19,8 @@ CREATE TABLE `friend_relation` (
     `notes` varchar(64) COMMENT '备注',
     `rela_status` bigint(20) COMMENT '关系状态-1:请求中,2:好友',
     `extra` text COMMENT '扩展信息',
-    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+    `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     `status` int DEFAULT 0 COMMENT '0存在，1删除',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -37,8 +37,8 @@ CREATE TABLE `message_single` (
    `sender_status_info` int DEFAULT 0 COMMENT '发送方信息状态 0:正常 1:删除',
    `receiver_status_info` int DEFAULT 0 COMMENT '接收方信息状态 0:正常 1:删除',
    `message_status_info` int DEFAULT 0 COMMENT '是否撤回 0:正常 1:撤回',
-   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+   `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+   `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
    `status` int DEFAULT 0 COMMENT '0存在，1删除',
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
