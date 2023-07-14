@@ -21,7 +21,7 @@ type MessageSingle struct {
 	ReadStatusInfo     int32     `gorm:"column:read_status_info" json:"read_status_info"`                             // 判断接收者 0:未读 1:已读
 	SenderStatusInfo   int32     `gorm:"column:sender_status_info" json:"sender_status_info"`                         // 发送方信息状态 0:正常 1:删除
 	ReceiverStatusInfo int32     `gorm:"column:receiver_status_info" json:"receiver_status_info"`                     // 接收方信息状态 0:正常 1:删除
-	MessageStatusInfo  int32     `gorm:"column:message_status_info" json:"message_status_info"`                       // 是否撤回 0:正常 1:撤回
+	Withdraw           int32     `gorm:"column:withdraw" json:"withdraw"`                                             // 是否撤回 0:正常 1:撤回
 	CreateTime         time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP(3)" json:"create_time"` // 创建时间
 	ModifyTime         time.Time `gorm:"column:modify_time;not null;default:CURRENT_TIMESTAMP(3)" json:"modify_time"` // 修改时间
 	Status             int32     `gorm:"column:status" json:"status"`                                                 // 0存在，1删除

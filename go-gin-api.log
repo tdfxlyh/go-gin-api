@@ -1,7 +1,10 @@
-[GIN-debug] GET    /ping                     --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func1 (3 handlers)
-[GIN-debug] POST   /register                 --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func2 (3 handlers)
-[GIN-debug] POST   /login                    --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func3 (3 handlers)
-[GIN-debug] GET    /info/user_info           --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func4 (4 handlers)
+[GIN-debug] GET    /ping                     --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func1 (4 handlers)
+[GIN-debug] POST   /register                 --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func2 (4 handlers)
+[GIN-debug] POST   /login                    --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func3 (4 handlers)
+[GIN-debug] GET    /info/user_info           --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func4 (5 handlers)
+[GIN-debug] POST   /message/get_message      --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func5 (5 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 400 with 200
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 400 with 200

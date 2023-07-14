@@ -36,7 +36,7 @@ func newMessageSingle(db *gorm.DB, opts ...gen.DOOption) messageSingle {
 	_messageSingle.ReadStatusInfo = field.NewInt32(tableName, "read_status_info")
 	_messageSingle.SenderStatusInfo = field.NewInt32(tableName, "sender_status_info")
 	_messageSingle.ReceiverStatusInfo = field.NewInt32(tableName, "receiver_status_info")
-	_messageSingle.MessageStatusInfo = field.NewInt32(tableName, "message_status_info")
+	_messageSingle.Withdraw = field.NewInt32(tableName, "withdraw")
 	_messageSingle.CreateTime = field.NewTime(tableName, "create_time")
 	_messageSingle.ModifyTime = field.NewTime(tableName, "modify_time")
 	_messageSingle.Status = field.NewInt32(tableName, "status")
@@ -59,7 +59,7 @@ type messageSingle struct {
 	ReadStatusInfo     field.Int32  // 判断接收者 0:未读 1:已读
 	SenderStatusInfo   field.Int32  // 发送方信息状态 0:正常 1:删除
 	ReceiverStatusInfo field.Int32  // 接收方信息状态 0:正常 1:删除
-	MessageStatusInfo  field.Int32  // 是否撤回 0:正常 1:撤回
+	Withdraw           field.Int32  // 是否撤回 0:正常 1:撤回
 	CreateTime         field.Time   // 创建时间
 	ModifyTime         field.Time   // 修改时间
 	Status             field.Int32  // 0存在，1删除
@@ -88,7 +88,7 @@ func (m *messageSingle) updateTableName(table string) *messageSingle {
 	m.ReadStatusInfo = field.NewInt32(table, "read_status_info")
 	m.SenderStatusInfo = field.NewInt32(table, "sender_status_info")
 	m.ReceiverStatusInfo = field.NewInt32(table, "receiver_status_info")
-	m.MessageStatusInfo = field.NewInt32(table, "message_status_info")
+	m.Withdraw = field.NewInt32(table, "withdraw")
 	m.CreateTime = field.NewTime(table, "create_time")
 	m.ModifyTime = field.NewTime(table, "modify_time")
 	m.Status = field.NewInt32(table, "status")
@@ -126,7 +126,7 @@ func (m *messageSingle) fillFieldMap() {
 	m.fieldMap["read_status_info"] = m.ReadStatusInfo
 	m.fieldMap["sender_status_info"] = m.SenderStatusInfo
 	m.fieldMap["receiver_status_info"] = m.ReceiverStatusInfo
-	m.fieldMap["message_status_info"] = m.MessageStatusInfo
+	m.fieldMap["withdraw"] = m.Withdraw
 	m.fieldMap["create_time"] = m.CreateTime
 	m.fieldMap["modify_time"] = m.ModifyTime
 	m.fieldMap["status"] = m.Status
