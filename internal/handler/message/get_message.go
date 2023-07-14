@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
+	"github.com/tdfxlyh/go-gin-api/internal/caller"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"sync"
@@ -14,7 +15,8 @@ type GetMessageHandler struct {
 	Req  GetMessageReq
 	Resp GetMessageResp
 
-	MsgSingleList []*models.MessageSingle
+	MsgSingleList       []*models.MessageSingle // 数据库读出的记录
+	NeedUpdateMsgIDList []int64                 // 需要更新为已读的消息id列表
 
 	Err error
 }
@@ -169,11 +171,13 @@ func (h *GetMessageHandler) GetMsgNewInfoCount() error {
 	return nil
 }
 
-// UpdateMsgRead 更新为已读
-func (h *GetMessageHandler) UpdateMsgRead(msgIDList []int64) {
-
-}
-
 func (h *GetMessageHandler) PackData() {
 
+	// 最后更新消息为已读
+	go h.UpdateMsgRead()
+}
+
+// UpdateMsgRead 更新为已读
+func (h *GetMessageHandler) UpdateMsgRead() {
+	caller.LyhTestDB.Debug().Table(models.TableNameMessageSingle).Where("id in (?)", h.NeedUpdateMsgIDList).Update("read_status_info", 1)
 }
