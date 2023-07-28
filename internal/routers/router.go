@@ -26,6 +26,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 
 	// 消息
 	messageGroup := r.Group("/message", middleware.AuthMiddleware())
+	messageGroup.POST("/add_message", dec(message.AddMessage))
 	messageGroup.POST("/get_message", dec(message.GetMessage))
 
 	return r
