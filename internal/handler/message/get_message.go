@@ -223,6 +223,10 @@ func (h *GetMessageHandler) PackData() {
 		// 先逆序
 		h.ReverseArray()
 		for _, msg := range h.MsgSingleList {
+			// 删除的消息
+			if (msg.SenderUserID == uctx.UID(h.Ctx) && msg.SenderStatusInfo == 1) || (msg.ReceiverUserID == uctx.UID(h.Ctx) && msg.ReceiverStatusInfo == 1) {
+				continue
+			}
 			msgItem := &MsgItem{
 				IsMe:        false,
 				AvatarUrl:   h.OtherAvatar,
@@ -248,6 +252,11 @@ func (h *GetMessageHandler) PackData() {
 				}
 			}
 			h.LastTime = msg.CreateTime
+			// 如果消息撤回了，不下发内容
+			if msg.Withdraw == 1 {
+				msgItem.Content = ""
+				msgItem.StdExtra = msg.Extra
+			}
 			h.Resp.MsgList = append(h.Resp.MsgList, msgItem)
 		}
 	}
