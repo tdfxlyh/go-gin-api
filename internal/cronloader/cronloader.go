@@ -20,7 +20,7 @@ func InitCronLoader() {
 	if err != nil {
 		panic(err)
 	}
-	gocron.Every(10).Seconds().Do(getUserInfoList)
+	gocron.Every(180).Seconds().Do(getUserInfoList)
 	go func() {
 		<-gocron.Start()
 	}()

@@ -22,7 +22,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 
 	// 获取用户信息
 	infoGroup := r.Group("/info", middleware.AuthMiddleware())
-	infoGroup.GET("/user_info", dec(user.UserInfo))
+	infoGroup.POST("/user_info", dec(user.UserInfo))
 
 	// 消息
 	messageGroup := r.Group("/message", middleware.AuthMiddleware())

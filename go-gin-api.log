@@ -1,7 +1,7 @@
 [GIN-debug] GET    /ping                     --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func1 (4 handlers)
 [GIN-debug] POST   /register                 --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func2 (4 handlers)
 [GIN-debug] POST   /login                    --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func3 (4 handlers)
-[GIN-debug] GET    /info/user_info           --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func4 (5 handlers)
+[GIN-debug] POST   /info/user_info           --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func4 (5 handlers)
 [GIN-debug] POST   /message/add_message      --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func5 (5 handlers)
 [GIN-debug] POST   /message/get_message      --> github.com/tdfxlyh/go-gin-api/internal/routers.CollectRoute.func6 (5 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
