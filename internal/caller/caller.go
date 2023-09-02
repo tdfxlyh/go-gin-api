@@ -1,7 +1,6 @@
 package caller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
@@ -9,9 +8,7 @@ import (
 
 func Init() {
 	// 初始化数据库
-	if err := InitDB(); err != nil {
-		fmt.Println(fmt.Sprintf("database err, err=%v", err))
-	}
+	InitDB()
 
 	// 日志设置
 	InitLogger()
