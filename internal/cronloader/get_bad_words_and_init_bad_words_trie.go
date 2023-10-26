@@ -20,13 +20,16 @@ func getBadWordsAndInitBadWordsTrie() error {
 
 func getBadWordsFromDB() ([]string, error) {
 	badWords := make([]*models.BadWord, 0)
-	caller.LyhTestDB.Debug().Table(models.TableNameBadWord).Find(&badWords)
+	caller.LyhTestDB.Debug().Table(models.TableNameBadWord).Where("status=0").Find(&badWords)
 	if badWords == nil {
 		log.Println("[getBadWordsFromDB] badWords is nil.")
 		return nil, fmt.Errorf("badWords is nil")
 	}
 	badWordsList := make([]string, 0)
 	for _, item := range badWords {
+		if item.Content == "" {
+			continue
+		}
 		badWordsList = append(badWordsList, item.Content)
 	}
 	log.Printf("[getBadWordsList] badWordsList=%v", badWordsList)
