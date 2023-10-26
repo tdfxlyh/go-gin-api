@@ -15,7 +15,7 @@ func InitCronLoader() {
 	var err error
 	ctx = context.Background()
 
-	err = getBadWordsAndInitBadWordsTrie()
+	err = getBadWordsAndInitBadWordsTrie() // 初始化敏感词树
 	if err != nil {
 		panic(err)
 	}
