@@ -8,22 +8,29 @@ import (
 )
 
 func getBadWordsAndInitBadWordsTrie() error {
+	// 从数据库获取信息
+	badWordsList, err := getBadWordsFromDB()
+	if err != nil {
+		return err
+	}
+	// 初始化敏感词树
+	BadWordsTrie = initTrie(badWordsList)
+	return nil
+}
+
+func getBadWordsFromDB() ([]string, error) {
 	badWords := make([]*models.BadWord, 0)
 	caller.LyhTestDB.Debug().Table(models.TableNameBadWord).Find(&badWords)
 	if badWords == nil {
-		log.Println("[getBadWordsList] badWords is nil.")
-		err := fmt.Errorf("badWords is nil")
-		return err
+		log.Println("[getBadWordsFromDB] badWords is nil.")
+		return nil, fmt.Errorf("badWords is nil")
 	}
 	badWordsList := make([]string, 0)
 	for _, item := range badWords {
 		badWordsList = append(badWordsList, item.Content)
 	}
 	log.Printf("[getBadWordsList] badWordsList=%v", badWordsList)
-
-	// 初始化敏感词树
-	BadWordsTrie = initTrie(badWordsList)
-	return nil
+	return badWordsList, nil
 }
 
 func initTrie(badWordsList []string) *BadWordsTrieNode {
