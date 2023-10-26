@@ -18,6 +18,7 @@ import (
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:             db,
+		BadWord:        newBadWord(db, opts...),
 		FriendRelation: newFriendRelation(db, opts...),
 		MessageSingle:  newMessageSingle(db, opts...),
 		User:           newUser(db, opts...),
@@ -27,6 +28,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	BadWord        badWord
 	FriendRelation friendRelation
 	MessageSingle  messageSingle
 	User           user
@@ -37,6 +39,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		BadWord:        q.BadWord.clone(db),
 		FriendRelation: q.FriendRelation.clone(db),
 		MessageSingle:  q.MessageSingle.clone(db),
 		User:           q.User.clone(db),
@@ -54,6 +57,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:             db,
+		BadWord:        q.BadWord.replaceDB(db),
 		FriendRelation: q.FriendRelation.replaceDB(db),
 		MessageSingle:  q.MessageSingle.replaceDB(db),
 		User:           q.User.replaceDB(db),
@@ -61,6 +65,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	BadWord        *badWordDo
 	FriendRelation *friendRelationDo
 	MessageSingle  *messageSingleDo
 	User           *userDo
@@ -68,6 +73,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		BadWord:        q.BadWord.WithContext(ctx),
 		FriendRelation: q.FriendRelation.WithContext(ctx),
 		MessageSingle:  q.MessageSingle.WithContext(ctx),
 		User:           q.User.WithContext(ctx),

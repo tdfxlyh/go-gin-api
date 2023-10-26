@@ -3,24 +3,24 @@ package cronloader
 import (
 	"context"
 	"github.com/jasonlvhit/gocron"
-	"github.com/tdfxlyh/go-gin-api/dal/models"
 )
 
 // 定时读取的数据可以放到内存里
 var (
 	ctx          context.Context
-	UserInfoList []*models.User
+	BadWordsTrie *BadWordsTrieNode
 )
 
 func InitCronLoader() {
 	var err error
 	ctx = context.Background()
 
-	err = getUserInfoList()
+	err = getBadWordsAndInitBadWordsTrie()
 	if err != nil {
 		panic(err)
 	}
-	gocron.Every(180).Seconds().Do(getUserInfoList)
+	gocron.Every(3).Minutes().Do(getBadWordsAndInitBadWordsTrie)
+
 	go func() {
 		<-gocron.Start()
 	}()
