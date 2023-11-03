@@ -106,10 +106,6 @@ func (h *GetMessageHandler) CheckReq() {
 			return
 		}
 	case NewInfo:
-		if h.Req.Timestamp == 0 {
-			h.Err = fmt.Errorf("timestamp is nil")
-			return
-		}
 		h.LastTime = time.UnixMilli(h.Req.Timestamp)
 	case Forward50, NewInfoCount:
 		if h.Req.Timestamp == 0 {
