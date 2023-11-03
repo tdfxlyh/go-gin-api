@@ -167,9 +167,9 @@ func (h *GetMessageHandler) GetUserInfo() error {
 	}
 	for _, user := range userList {
 		if user.UID == uctx.UID(h.Ctx) {
-			h.MyAvatar = user.Avatar
+			h.MyAvatar = utils.GetPic(user.Avatar)
 		} else {
-			h.OtherAvatar = user.Avatar
+			h.OtherAvatar = utils.GetPic(user.Avatar)
 		}
 	}
 	h.OtherUserName = friendInfo.Notes

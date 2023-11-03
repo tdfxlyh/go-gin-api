@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/internal/handler"
+	"github.com/tdfxlyh/go-gin-api/internal/handler/friend"
 	"github.com/tdfxlyh/go-gin-api/internal/handler/message"
 	"github.com/tdfxlyh/go-gin-api/internal/handler/user"
 	"github.com/tdfxlyh/go-gin-api/internal/middleware"
@@ -27,6 +28,10 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	messageGroup.POST("/add_message", dec(message.AddMessage))
 	messageGroup.POST("/get_message", dec(message.GetMessage))
 	messageGroup.POST("/opt_message", dec(message.OptMessage))
+
+	// 朋友信息
+	friendGroup := r.Group("/friend", middleware.AuthMiddleware())
+	friendGroup.POST("/friend_list", dec(friend.GetFriendList))
 
 	return r
 }
