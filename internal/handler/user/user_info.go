@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 )
@@ -81,6 +82,6 @@ func (h *UserInfoHandler) GetData() {
 	h.Resp = &UserInfoResp{
 		UID:      userInfo.UID,
 		UserName: userInfo.UserName,
-		Avatar:   userInfo.Avatar,
+		Avatar:   utils.GetPic(userInfo.Avatar),
 	}
 }
