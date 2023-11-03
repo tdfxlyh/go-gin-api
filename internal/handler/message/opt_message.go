@@ -60,7 +60,7 @@ func (h *OptMessageHandler) CheckReq() string {
 	if h.Msg.ID == 0 {
 		return "msg not found"
 	}
-	if h.Msg.SenderUserID != uctx.User(h.Ctx).UID {
+	if h.Req.OptType == MsgWithdraw && h.Msg.SenderUserID != uctx.User(h.Ctx).UID {
 		return "not operate other user msg"
 	}
 	return ""
