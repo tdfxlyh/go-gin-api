@@ -105,4 +105,5 @@ func (h *GetFriendListHandler) PackData() {
 	sort.Slice(h.Resp.UserList, func(i, j int) bool {
 		return h.Resp.UserList[i].Pinyin < h.Resp.UserList[j].Pinyin
 	})
+	h.Resp.Count = int64(len(h.Resp.UserList))
 }
