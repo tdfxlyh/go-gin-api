@@ -50,6 +50,7 @@ type GetMessageResp struct {
 }
 
 type MsgItem struct {
+	Id          int64  `json:"id"`
 	IsMe        bool   `json:"is_me"`
 	AvatarUrl   string `json:"avatar_url"`
 	MessageType int64  `json:"message_type"`
@@ -228,6 +229,7 @@ func (h *GetMessageHandler) PackData() {
 				continue
 			}
 			msgItem := &MsgItem{
+				Id:          msg.ID,
 				IsMe:        false,
 				AvatarUrl:   h.OtherAvatar,
 				MessageType: msg.MessageType,

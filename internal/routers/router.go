@@ -13,10 +13,8 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	// 全局捕获异常
 	r.Use(middleware.ExceptionMiddleware)
 
-	// ping
+	// ping、注册、登录
 	r.GET("/ping", dec(handler.Ping))
-
-	// 注册、登录
 	r.POST("/register", dec(user.Register))
 	r.POST("/login", dec(user.Login))
 
@@ -28,6 +26,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	messageGroup := r.Group("/message", middleware.AuthMiddleware())
 	messageGroup.POST("/add_message", dec(message.AddMessage))
 	messageGroup.POST("/get_message", dec(message.GetMessage))
+	messageGroup.POST("/opt_message", dec(message.OptMessage))
 
 	return r
 }
