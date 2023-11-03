@@ -8,7 +8,11 @@ CREATE TABLE `user` (
     `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     `status` int DEFAULT 0 COMMENT '0存在，1删除',
-    PRIMARY KEY (`uid`)
+    PRIMARY KEY (`uid`),
+    KEY `idx_phone` (`phone`),
+    KEY `idx_status` (`status`),
+    KEY `idx_create_time` (`create_time`),
+    KEY `idx_modify_time` (`modify_time`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
@@ -23,7 +27,13 @@ CREATE TABLE `friend_relation` (
     `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     `status` int DEFAULT 0 COMMENT '0存在，1删除',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id` (`user_id`),
+    KEY `idx_other_user_id` (`other_user_id`),
+    KEY `idx_rela_status` (`rela_status`),
+    KEY `idx_status` (`status`),
+    KEY `idx_create_time` (`create_time`),
+    KEY `idx_modify_time` (`modify_time`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
@@ -41,7 +51,17 @@ CREATE TABLE `message_single` (
    `create_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
    `modify_time` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
    `status` int DEFAULT 0 COMMENT '0存在，1删除',
-   PRIMARY KEY (`id`)
+   PRIMARY KEY (`id`),
+   KEY `idx_sender_user_id` (`sender_user_id`),
+   KEY `idx_receiver_user_id` (`receiver_user_id`),
+   KEY `idx_message_type` (`message_type`),
+   KEY `idx_read_status_info` (`read_status_info`),
+   KEY `idx_sender_status_info` (`sender_status_info`),
+   KEY `idx_receiver_status_info` (`receiver_status_info`),
+   KEY `idx_withdraw` (`withdraw`),
+   KEY `idx_status` (`status`),
+   KEY `idx_create_time` (`create_time`),
+   KEY `idx_modify_time` (`modify_time`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
