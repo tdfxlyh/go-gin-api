@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.Default()
 
 	// 一些初始化操作
