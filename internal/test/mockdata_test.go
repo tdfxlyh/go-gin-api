@@ -12,8 +12,8 @@ func TestMock(t *testing.T) {
 	caller.Init()
 	fmt.Printf("init finish\n")
 
-	sta := 12
-	end := 200000
+	sta := 1
+	end := 200
 	for i := sta; i <= end; i++ {
 		if i%1000 == 0 {
 			fmt.Printf("%.2f\n", float64(i)/float64(end))
