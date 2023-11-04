@@ -32,6 +32,8 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	// 朋友信息
 	friendGroup := r.Group("/friend", middleware.AuthMiddleware())
 	friendGroup.POST("/friend_list", dec(friend.GetFriendList))
+	friendGroup.POST("/add_friend", dec(friend.AddFriend))
+	friendGroup.POST("/update_notes", dec(friend.UpdateNotes))
 
 	return r
 }
