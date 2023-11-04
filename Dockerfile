@@ -22,8 +22,8 @@ RUN go build -o main
 # 暴露一个端口
 EXPOSE 8080
 
-# 启动应用程序
-CMD ["./go-gin-api"]
+# 启动应用程序 # 是个坑，项目名不行就用main试试
+CMD ["./main"]
 
 
 
@@ -33,14 +33,17 @@ CMD ["./go-gin-api"]
 # 3.登录dockerhub
 # docker login -u tdfxlyh
 # 4.新建一个tag，名字必须跟你注册账号一样
-# docker tag go-gin-api tdfxlyh/go-gin-api:latest
+# docker tag go-gin-api tdfxlyh/go-gin-api:1.0.0
 # 5.推上去
-# docker push tdfxlyh/go-gin-api:latest
+# docker push tdfxlyh/go-gin-api:1.0.0
 
 
 # 远程服务器拉取
-# docker pull tdfxlyh/go-gin-api:latest
-# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:latest
+# docker pull tdfxlyh/go-gin-api:1.0.0
+# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.0
+# 下面是本机试试
+# docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.0
+# docker run -p 8080:8080 go-gin-api
 
 
 

@@ -64,7 +64,7 @@ func GetFriendList(ctx *gin.Context) *output.RespStu {
 
 func (h *GetFriendListHandler) GetFriends() {
 	friendList := make([]models.FriendRelation, 0)
-	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("status=0 and user_id=?", uctx.UID(h.Ctx)).Find(&friendList).Error
+	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("status=0 and rela_status=2 and user_id=?", uctx.UID(h.Ctx)).Find(&friendList).Error
 	if h.Err != nil {
 		fmt.Printf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err)
 		return
