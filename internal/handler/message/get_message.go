@@ -154,6 +154,7 @@ func (h *GetMessageHandler) GetUserInfo() error {
 		err := fmt.Errorf("friend not found")
 		return err
 	}
+	h.OtherUserName = friendInfo.Notes
 	// 查头像
 	userList := make([]models.User, 0)
 	caller.LyhTestDB.Table(models.TableNameUser).Where("uid=? or uid=?", uctx.UID(h.Ctx), h.Req.ReceiverUserID).Find(&userList)
@@ -166,9 +167,11 @@ func (h *GetMessageHandler) GetUserInfo() error {
 			h.MyAvatar = utils.GetPic(user.Avatar)
 		} else {
 			h.OtherAvatar = utils.GetPic(user.Avatar)
+			if h.OtherUserName == "" {
+				h.OtherUserName = user.UserName
+			}
 		}
 	}
-	h.OtherUserName = friendInfo.Notes
 	return nil
 }
 
