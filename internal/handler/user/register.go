@@ -86,6 +86,7 @@ func (h *RegisterHandler) CreateUser() {
 		UserName: h.UserName,
 		Phone:    h.Phone,
 		Password: string(hasePassword),
+		Avatar:   "https://img0.baidu.com/it/u=1821253856,3774998416&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
 	}
 	h.Err = caller.LyhTestDB.Create(newUser).Error
 }
