@@ -33,16 +33,16 @@ CMD ["./main"]
 # 3.登录dockerhub
 # docker login -u tdfxlyh
 # 4.新建一个tag，名字必须跟你注册账号一样
-# docker tag go-gin-api tdfxlyh/go-gin-api:1.0.0
+# docker tag go-gin-api tdfxlyh/go-gin-api:1.0.1
 # 5.推上去
-# docker push tdfxlyh/go-gin-api:1.0.0
+# docker push tdfxlyh/go-gin-api:1.0.1
 
 
 # 远程服务器拉取
-# docker pull tdfxlyh/go-gin-api:1.0.0
-# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.0
+# docker pull tdfxlyh/go-gin-api:1.0.1
+# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.1
 # 下面是本机试试
-# docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.0
+# docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.1
 # docker run -p 8080:8080 go-gin-api
 
 
@@ -66,4 +66,4 @@ CMD ["./main"]
 # docker rm [-f] 容器ID(容器名)
 
 # 数据库容器
-# docker run -d -p 3306:3306 --privileged=true -v /home/lyh/app/db/mysql/log:/var/log/mysql -v /home/lyh/app/db/mysql/data:/var/lib/mysql -v /home/lyh/app/db/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=991113 --name=mysql mysql:5.7
+# docker run -d -p 3306:3306 --privileged=true -v /home/lyh/app/db/mysql/log:/var/log/mysql -v /home/lyh/app/db/mysql/data:/var/lib/mysql -v /home/lyh/app/db/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=991113 -e TZ=Asia/Shanghai --name=mysql mysql:5.7
