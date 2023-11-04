@@ -27,10 +27,12 @@ type GetFriendListResp struct {
 }
 
 type UserItem struct {
-	Id     int64  `json:"id"`
-	Name   string `json:"name"`
-	Avatar string `json:"avatar"`
-	Pinyin string `json:"pinyin"`
+	Id       int64  `json:"id"`
+	Name     string `json:"name"`
+	Avatar   string `json:"avatar"`
+	Pinyin   string `json:"pinyin"`
+	Count    int64  `json:"count"`
+	CountStr string `json:"count_str"`
 }
 
 func NewFriendListHandler(ctx *gin.Context) *GetFriendListHandler {
@@ -54,6 +56,10 @@ func GetFriendList(ctx *gin.Context) *output.RespStu {
 	}
 	// 获取好友用户信息
 	if h.GetUsersInfo(); h.Err != nil {
+		return output.Fail(ctx, output.StatusCodeDBError)
+	}
+	// 获取消息未读数
+	if h.GetMsgCount(); h.Err != nil {
 		return output.Fail(ctx, output.StatusCodeDBError)
 	}
 	// 打包数据
@@ -97,8 +103,29 @@ func (h *GetFriendListHandler) GetUsersInfo() {
 	}
 }
 
+func (h *GetFriendListHandler) GetMsgCount() {
+	for _, friendID := range h.FriendUserIDs {
+		msgList := make([]*models.MessageSingle, 0)
+		caller.LyhTestDB.Table(models.TableNameMessageSingle).
+			Where("sender_user_id=? and receiver_user_id=?",
+				friendID, uctx.UID(h.Ctx)).
+			Order("create_time desc").Limit(120).
+			Find(&msgList)
+		for _, msg := range msgList {
+			if msg.ReadStatusInfo == 0 {
+				h.FriendUserInfoMap[friendID].Count++
+			}
+		}
+	}
+}
+
 func (h *GetFriendListHandler) PackData() {
 	for _, friendInfo := range h.FriendUserInfoMap {
+		if friendInfo.Count > 0 && friendInfo.Count <= 99 {
+			friendInfo.CountStr = fmt.Sprintf("%d", friendInfo.Count)
+		} else if friendInfo.Count > 99 {
+			friendInfo.CountStr = "99+"
+		}
 		h.Resp.UserList = append(h.Resp.UserList, friendInfo)
 	}
 	// 按首字符排序

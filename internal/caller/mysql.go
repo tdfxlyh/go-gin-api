@@ -12,8 +12,8 @@ var (
 )
 
 func InitDB() {
-	LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "127.0.0.1", 3306)
-	//LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "", 3306)
+	//LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "127.0.0.1", 3306)
+	LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "121.40.249.44", 3306)
 	//LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "192.168.23.128", 3306)
 
 	fmt.Println("success...")
