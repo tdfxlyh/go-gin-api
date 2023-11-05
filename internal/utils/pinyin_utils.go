@@ -3,13 +3,14 @@ package utils
 import (
 	"github.com/mozillazg/go-pinyin"
 	"unicode"
+	"unicode/utf8"
 )
 
 func GetFirstPinYin(str string) string {
 	if str == "" {
 		return ""
 	}
-	firstChar := rune(str[0])
+	firstChar, _ := utf8.DecodeRuneInString(str)
 	if unicode.Is(unicode.Han, firstChar) {
 		// 如果是汉字
 		pinyinSlice := pinyin.Pinyin(str, pinyin.NewArgs())
