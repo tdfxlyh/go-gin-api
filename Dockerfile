@@ -33,15 +33,15 @@ CMD ["./main"]
 # 3.登录dockerhub
 # docker login -u tdfxlyh
 # 4.新建一个tag，名字必须跟你注册账号一样
-# docker tag go-gin-api tdfxlyh/go-gin-api:1.0.4
+# docker tag go-gin-api tdfxlyh/go-gin-api:1.0.6
 # 5.推上去
-# docker push tdfxlyh/go-gin-api:1.0.4
+# docker push tdfxlyh/go-gin-api:1.0.6
 
 
 # 远程服务器拉取
-# docker pull tdfxlyh/go-gin-api:1.0.4
+# docker pull tdfxlyh/go-gin-api:1.0.6
 # docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.1
-# docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.4
+# docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.6
 # 下面是本机试试
 # docker run -p 8080:8080 go-gin-api
 
