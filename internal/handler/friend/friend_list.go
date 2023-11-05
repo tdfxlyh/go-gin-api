@@ -9,11 +9,13 @@ import (
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 	"sort"
+	"sync"
 )
 
 type GetFriendListHandler struct {
 	Ctx  *gin.Context
 	Resp *GetFriendListResp
+	Lock sync.RWMutex
 
 	FriendUserInfoMap map[int64]*UserItem
 	FriendUserIDs     []int64
@@ -38,6 +40,7 @@ type UserItem struct {
 func NewFriendListHandler(ctx *gin.Context) *GetFriendListHandler {
 	return &GetFriendListHandler{
 		Ctx:               ctx,
+		Lock:              sync.RWMutex{},
 		FriendUserIDs:     make([]int64, 0),
 		FriendUserInfoMap: make(map[int64]*UserItem),
 
@@ -54,12 +57,9 @@ func GetFriendList(ctx *gin.Context) *output.RespStu {
 	if h.GetFriends(); h.Err != nil {
 		return output.Fail(ctx, output.StatusCodeDBError)
 	}
-	// 获取好友用户信息
-	if h.GetUsersInfo(); h.Err != nil {
-		return output.Fail(ctx, output.StatusCodeDBError)
-	}
-	// 获取消息未读数
-	if h.GetMsgCount(); h.Err != nil {
+
+	// 获取好友用户信息 和消息未读数
+	if h.GetUserInfoAndMsgCount(); h.Err != nil {
 		return output.Fail(ctx, output.StatusCodeDBError)
 	}
 	// 打包数据
@@ -84,6 +84,23 @@ func (h *GetFriendListHandler) GetFriends() {
 	}
 }
 
+func (h *GetFriendListHandler) GetUserInfoAndMsgCount() {
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		// 获取好友用户信息
+		h.GetUsersInfo()
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		// 获取消息未读数
+		h.GetMsgCount()
+	}()
+	wg.Wait()
+}
+
 func (h *GetFriendListHandler) GetUsersInfo() {
 	userList := make([]models.User, 0)
 	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?)", h.FriendUserIDs).Find(&userList).Error
@@ -96,27 +113,40 @@ func (h *GetFriendListHandler) GetUsersInfo() {
 			continue
 		}
 		if h.FriendUserInfoMap[user.UID].Name == "" {
+			h.Lock.Lock()
 			h.FriendUserInfoMap[user.UID].Name = user.UserName
+			h.Lock.Unlock()
 		}
+		h.Lock.Lock()
 		h.FriendUserInfoMap[user.UID].Avatar = utils.GetPic(user.Avatar)
 		h.FriendUserInfoMap[user.UID].Pinyin = utils.GetFirstPinYin(h.FriendUserInfoMap[user.UID].Name)
+		h.Lock.Unlock()
 	}
+	return
 }
 
 func (h *GetFriendListHandler) GetMsgCount() {
+	var wg sync.WaitGroup
 	for _, friendID := range h.FriendUserIDs {
-		msgList := make([]*models.MessageSingle, 0)
-		caller.LyhTestDB.Table(models.TableNameMessageSingle).
-			Where("sender_user_id=? and receiver_user_id=?",
-				friendID, uctx.UID(h.Ctx)).
-			Order("create_time desc").Limit(120).
-			Find(&msgList)
-		for _, msg := range msgList {
-			if msg.ReadStatusInfo == 0 {
-				h.FriendUserInfoMap[friendID].Count++
+		wg.Add(1)
+		go func(friendID int64) {
+			defer wg.Done()
+			msgList := make([]*models.MessageSingle, 0)
+			caller.LyhTestDB.Table(models.TableNameMessageSingle).
+				Where("sender_user_id=? and receiver_user_id=?",
+					friendID, uctx.UID(h.Ctx)).
+				Order("create_time desc").Limit(120).
+				Find(&msgList)
+			for _, msg := range msgList {
+				if msg.ReadStatusInfo == 0 {
+					h.Lock.Lock()
+					h.FriendUserInfoMap[friendID].Count++
+					h.Lock.Unlock()
+				}
 			}
-		}
+		}(friendID)
 	}
+	wg.Wait()
 }
 
 func (h *GetFriendListHandler) PackData() {

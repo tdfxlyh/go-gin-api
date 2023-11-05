@@ -19,15 +19,17 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.POST("/register", dec(user.Register))
 	r.POST("/login", dec(user.Login))
 
-	// 获取用户信息
+	// 用户信息
 	infoGroup := r.Group("/info", middleware.AuthMiddleware())
-	infoGroup.POST("/user_info", dec(user.UserInfo))
+	infoGroup.POST("/user_info", dec(user.UserInfo)) // 获取用户信息
+	infoGroup.POST("/opt_user", dec(user.OptUser))   // 修改用户名或头像
 
 	// 消息
 	messageGroup := r.Group("/message", middleware.AuthMiddleware())
 	messageGroup.POST("/add_message", dec(message.AddMessage))
 	messageGroup.POST("/get_message", dec(message.GetMessage))
 	messageGroup.POST("/opt_message", dec(message.OptMessage))
+	messageGroup.POST("/message_info_list", dec(message.GetMessageInfoList))
 
 	// 朋友信息
 	friendGroup := r.Group("/friend", middleware.AuthMiddleware())
