@@ -66,7 +66,7 @@ func (h *LoginHandler) CheckReq() {
 
 func (h *LoginHandler) CheckDB() {
 	// 判断手机号是否存在
-	caller.LyhTestDB.Where("phone = ?", h.Phone).First(&h.DBUser)
+	caller.LyhTestDB.Where("phone = ? and status=0", h.Phone).First(&h.DBUser)
 	if h.DBUser.UID == 0 {
 		h.Err = fmt.Errorf("phone not exist")
 		return

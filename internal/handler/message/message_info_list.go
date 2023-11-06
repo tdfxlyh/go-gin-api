@@ -73,7 +73,7 @@ func GetMessageInfoList(ctx *gin.Context) *output.RespStu {
 
 func (h *GetMessageInfoListHandler) GetFriends() {
 	GetMessageInfoList := make([]models.FriendRelation, 0)
-	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("status=0 and rela_status=2 and user_id=?", uctx.UID(h.Ctx)).Find(&GetMessageInfoList).Error
+	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("rela_status=2 and user_id=? and status=0", uctx.UID(h.Ctx)).Find(&GetMessageInfoList).Error
 	if h.Err != nil {
 		fmt.Printf("[GetMessageInfoListHandler-GetFriends] db fail, err=%s\n", h.Err)
 		return
@@ -106,7 +106,7 @@ func (h *GetMessageInfoListHandler) GetUserInfoAndMsgCount() {
 
 func (h *GetMessageInfoListHandler) GetUsersInfo() {
 	userList := make([]models.User, 0)
-	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?)", h.FriendUserIDs).Find(&userList).Error
+	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?) and status=0", h.FriendUserIDs).Find(&userList).Error
 	if h.Err != nil {
 		fmt.Printf("[GetMessageInfoListHandler-GetFriends] db fail, err=%s\n", h.Err)
 		return
@@ -134,11 +134,15 @@ func (h *GetMessageInfoListHandler) GetMsgCount() {
 			defer wg.Done()
 			msgList := make([]*models.MessageSingle, 0)
 			caller.LyhTestDB.Table(models.TableNameMessageSingle).
-				Where("(sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)",
+				Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and status=0",
 					friendID, uctx.UID(h.Ctx), uctx.UID(h.Ctx), friendID).
-				Order("create_time desc").Limit(220).
+				Order("create_time desc").Limit(150).
 				Find(&msgList)
 			for _, msg := range msgList {
+				// 删除的消息
+				if (msg.SenderUserID == uctx.UID(h.Ctx) && msg.SenderStatusInfo == 1) || (msg.ReceiverUserID == uctx.UID(h.Ctx) && msg.ReceiverStatusInfo == 1) {
+					continue
+				}
 				if h.FriendUserInfoMap[friendID].Timestamp == 0 {
 					timeStr := ""
 					if msg.CreateTime.After(utils.GetTodayMidnight()) {
@@ -153,6 +157,12 @@ func (h *GetMessageInfoListHandler) GetMsgCount() {
 					h.Lock.Lock()
 					h.FriendUserInfoMap[friendID].Timestamp = msg.CreateTime.UnixMilli()
 					h.FriendUserInfoMap[friendID].Desc = msg.Content
+					if msg.Withdraw == 1 {
+						h.FriendUserInfoMap[friendID].Desc = ">>对方撤回了一条消息"
+						if msg.SenderUserID == uctx.UID(h.Ctx) {
+							h.FriendUserInfoMap[friendID].Desc = ">>我撤回了一条消息"
+						}
+					}
 					h.FriendUserInfoMap[friendID].TimeStr = timeStr
 					h.Lock.Unlock()
 				}
@@ -176,7 +186,7 @@ func (h *GetMessageInfoListHandler) PackData() {
 		}
 		h.Resp.UserList = append(h.Resp.UserList, friendInfo)
 	}
-	// 按首字符排序
+	// 按时间戳排序
 	sort.Slice(h.Resp.UserList, func(i, j int) bool {
 		if h.Resp.UserList[i].Timestamp == h.Resp.UserList[j].Timestamp {
 			return h.Resp.UserList[i].Id < h.Resp.UserList[j].Id

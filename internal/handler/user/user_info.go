@@ -74,7 +74,7 @@ func (h *UserInfoHandler) GetData() {
 		uid = h.Req.UID
 	}
 	userInfo := models.User{}
-	caller.LyhTestDB.Table(models.TableNameUser).Debug().Where("uid=?", uid).First(&userInfo)
+	caller.LyhTestDB.Table(models.TableNameUser).Debug().Where("uid=? and status=0", uid).First(&userInfo)
 	if userInfo.UID == 0 {
 		h.Err = fmt.Errorf("user not found")
 		return

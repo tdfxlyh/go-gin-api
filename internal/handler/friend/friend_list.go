@@ -70,7 +70,7 @@ func GetFriendList(ctx *gin.Context) *output.RespStu {
 
 func (h *GetFriendListHandler) GetFriends() {
 	friendList := make([]models.FriendRelation, 0)
-	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("status=0 and rela_status=2 and user_id=?", uctx.UID(h.Ctx)).Find(&friendList).Error
+	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("rela_status=2 and user_id=? and status=0", uctx.UID(h.Ctx)).Find(&friendList).Error
 	if h.Err != nil {
 		fmt.Printf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err)
 		return
@@ -103,7 +103,7 @@ func (h *GetFriendListHandler) GetUserInfoAndMsgCount() {
 
 func (h *GetFriendListHandler) GetUsersInfo() {
 	userList := make([]models.User, 0)
-	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?)", h.FriendUserIDs).Find(&userList).Error
+	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?) and status=0", h.FriendUserIDs).Find(&userList).Error
 	if h.Err != nil {
 		fmt.Printf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err)
 		return
@@ -133,7 +133,7 @@ func (h *GetFriendListHandler) GetMsgCount() {
 			defer wg.Done()
 			msgList := make([]*models.MessageSingle, 0)
 			caller.LyhTestDB.Table(models.TableNameMessageSingle).
-				Where("sender_user_id=? and receiver_user_id=?",
+				Where("sender_user_id=? and receiver_user_id=? and status=0",
 					friendID, uctx.UID(h.Ctx)).
 				Order("create_time desc").Limit(120).
 				Find(&msgList)

@@ -56,7 +56,7 @@ func (h *OptMessageHandler) CheckReq() string {
 	if h.Req.MessageID == 0 {
 		return "miss message_id"
 	}
-	caller.LyhTestDB.Debug().Table(models.TableNameMessageSingle).Where("id=?", h.Req.MessageID).First(&h.Msg)
+	caller.LyhTestDB.Debug().Table(models.TableNameMessageSingle).Where("id=? and status=0", h.Req.MessageID).First(&h.Msg)
 	if h.Msg.ID == 0 {
 		return "msg not found"
 	}
