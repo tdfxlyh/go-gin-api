@@ -42,7 +42,7 @@ func (h *UpdateNotesHandler) CheckReqAndUpdate() string {
 		return "缺少参数"
 	}
 	var user models.User
-	caller.LyhTestDB.Table(models.TableNameUser).Where("uid = ?", h.Req.UserID).First(&user)
+	caller.LyhTestDB.Table(models.TableNameUser).Where("uid=? and status=0", h.Req.UserID).First(&user)
 	if user.UID == 0 {
 		return "用户不存在"
 	}

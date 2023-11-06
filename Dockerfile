@@ -40,7 +40,7 @@ CMD ["./main"]
 
 # 远程服务器拉取
 # docker pull tdfxlyh/go-gin-api:1.0.6
-# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.1
+# docker run -d -p 8080:8080 tdfxlyh/go-gin-api:1.0.6
 # docker run -p 8080:8080 tdfxlyh/go-gin-api:1.0.6
 # 下面是本机试试
 # docker run -p 8080:8080 go-gin-api

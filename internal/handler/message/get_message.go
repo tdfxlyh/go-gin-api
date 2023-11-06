@@ -149,7 +149,7 @@ func (h *GetMessageHandler) GetUserInfo() error {
 	// 查对方昵称
 	var friendInfo models.FriendRelation
 	caller.LyhTestDB.Table(models.TableNameFriendRelation).Debug().
-		Where("user_id=? and other_user_id=? and rela_status=2", uctx.UID(h.Ctx), h.Req.ReceiverUserID).First(&friendInfo)
+		Where("user_id=? and other_user_id=? and rela_status=2 and status=0", uctx.UID(h.Ctx), h.Req.ReceiverUserID).First(&friendInfo)
 	if friendInfo.ID == 0 {
 		err := fmt.Errorf("friend not found")
 		return err
@@ -157,7 +157,7 @@ func (h *GetMessageHandler) GetUserInfo() error {
 	h.OtherUserName = friendInfo.Notes
 	// 查头像
 	userList := make([]models.User, 0)
-	caller.LyhTestDB.Table(models.TableNameUser).Where("uid=? or uid=?", uctx.UID(h.Ctx), h.Req.ReceiverUserID).Find(&userList)
+	caller.LyhTestDB.Table(models.TableNameUser).Where("(uid=? or uid=?) and status=0", uctx.UID(h.Ctx), h.Req.ReceiverUserID).Find(&userList)
 	if len(userList) < 2 {
 		err := fmt.Errorf("user not exist")
 		return err
@@ -190,7 +190,7 @@ func (h *GetMessageHandler) GetMsgList() error {
 
 func (h *GetMessageHandler) GetMsgNewN(n int64) error {
 	caller.LyhTestDB.Table(models.TableNameMessageSingle).
-		Where("(sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)",
+		Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and status=0",
 			uctx.UID(h.Ctx), h.Req.ReceiverUserID, h.Req.ReceiverUserID, uctx.UID(h.Ctx)).
 		Order("create_time desc").Limit(int(n)).
 		Find(&h.MsgSingleList)
@@ -199,7 +199,7 @@ func (h *GetMessageHandler) GetMsgNewN(n int64) error {
 
 func (h *GetMessageHandler) GetMsgForward50() error {
 	caller.LyhTestDB.Table(models.TableNameMessageSingle).
-		Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and create_time < ?",
+		Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and create_time<? and status=0",
 			uctx.UID(h.Ctx), h.Req.ReceiverUserID, h.Req.ReceiverUserID, uctx.UID(h.Ctx), time.UnixMilli(h.Req.Timestamp)).
 		Order("create_time desc").Limit(50).
 		Find(&h.MsgSingleList)
@@ -208,7 +208,7 @@ func (h *GetMessageHandler) GetMsgForward50() error {
 
 func (h *GetMessageHandler) GetMsgNewInfo() error {
 	caller.LyhTestDB.Table(models.TableNameMessageSingle).
-		Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and create_time > ?",
+		Where("((sender_user_id=? and receiver_user_id=?) or (sender_user_id=? and receiver_user_id=?)) and create_time>? and status=0",
 			uctx.UID(h.Ctx), h.Req.ReceiverUserID, h.Req.ReceiverUserID, uctx.UID(h.Ctx), time.UnixMilli(h.Req.Timestamp)).
 		Order("create_time desc").
 		Find(&h.MsgSingleList)

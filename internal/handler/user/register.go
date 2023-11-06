@@ -72,7 +72,7 @@ func (h *RegisterHandler) CheckReq() string {
 func (h *RegisterHandler) CheckUserExists() bool {
 	// 判断手机号是否已经存在
 	var user models.User
-	caller.LyhTestDB.Where("phone = ?", h.Phone).First(&user)
+	caller.LyhTestDB.Where("phone=? and status=0", h.Phone).First(&user)
 	return user.UID != 0
 }
 

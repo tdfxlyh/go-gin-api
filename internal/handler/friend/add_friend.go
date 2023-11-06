@@ -42,7 +42,7 @@ func (h *AddFriendHandler) CheckReqAndAdd() string {
 		return "缺少手机号"
 	}
 	var user models.User
-	caller.LyhTestDB.Table(models.TableNameUser).Where("phone = ?", h.Req.Phone).First(&user)
+	caller.LyhTestDB.Table(models.TableNameUser).Where("phone=? and status=0", h.Req.Phone).First(&user)
 	if user.UID == 0 {
 		return "用户不存在"
 	}
@@ -50,7 +50,7 @@ func (h *AddFriendHandler) CheckReqAndAdd() string {
 		return "不能添加自己为好友"
 	}
 	friendList := make([]models.FriendRelation, 0)
-	caller.LyhTestDB.Table(models.TableNameFriendRelation).Where("(user_id=? and other_user_id=? and rela_status=2) or (user_id=? and other_user_id=? and rela_status=2)", uctx.UID(h.Ctx), user.UID, user.UID, uctx.UID(h.Ctx)).Find(&friendList)
+	caller.LyhTestDB.Table(models.TableNameFriendRelation).Where("((user_id=? and other_user_id=? and rela_status=2) or (user_id=? and other_user_id=? and rela_status=2)) and status=0", uctx.UID(h.Ctx), user.UID, user.UID, uctx.UID(h.Ctx)).Find(&friendList)
 	if len(friendList) > 0 {
 		return "已经是好友了"
 	}

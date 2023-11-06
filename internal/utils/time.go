@@ -4,28 +4,28 @@ import "time"
 
 // GetTodayMidnight 获取午夜0点的时间
 func GetTodayMidnight() time.Time {
-	now := time.Now()
+	now := time.Now().Local()
 	midnight := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	return midnight
 }
 
 // GetYesterdayMidnight 获取昨天0点的时间
 func GetYesterdayMidnight() time.Time {
-	now := time.Now()
+	now := time.Now().Local()
 	yesterdayMidnight := time.Date(now.Year(), now.Month(), now.Day()-1, 0, 0, 0, 0, now.Location())
 	return yesterdayMidnight
 }
 
 // GetStartOfYear 获取新年第一天0点的时间
 func GetStartOfYear() time.Time {
-	now := time.Now()
+	now := time.Now().Local()
 	startOfYear := time.Date(now.Year(), 1, 1, 0, 0, 0, 0, now.Location())
 	return startOfYear
 }
 
 // GetYearOf2000 2000年零点
 func GetYearOf2000() time.Time {
-	now := time.Now()
+	now := time.Now().Local()
 	time := time.Date(2000, 1, 1, 0, 0, 0, 0, now.Location())
 	return time
 }
