@@ -10,6 +10,7 @@ import (
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 	"io/fs"
 	"strings"
+	"time"
 )
 
 type AddMessageHandler struct {
@@ -102,9 +103,10 @@ func (h *AddMessageHandler) AddMessageToDB() {
 
 func (h *AddMessageHandler) GetNewInfo() {
 	getMessageHandler := NewGetMessageHandler(h.Ctx)
-	optType := NewInfo
-	if h.Req.Timestamp == 0 { // 没有时间戳返回最新10条记录
-		optType = NewN
+	optType := NewN
+	if h.Req.Timestamp != 0 { // 没有时间戳返回最新10条记录
+		optType = NewInfo
+		getMessageHandler.LastTime = time.UnixMilli(h.Req.Timestamp)
 	}
 	getMessageHandler.Req = GetMessageReq{
 		OptType:        int64(optType),
