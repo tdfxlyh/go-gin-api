@@ -13,8 +13,9 @@ import (
 )
 
 type AddMessageHandler struct {
-	Ctx *gin.Context
-	Req AddMessageReq
+	Ctx  *gin.Context
+	Req  AddMessageReq
+	Resp interface{}
 
 	Err error
 }
@@ -23,6 +24,7 @@ type AddMessageReq struct {
 	MessageType    int64   `json:"message_type"`
 	Content        string  `json:"content"`
 	ReceiverUserID int64   `json:"receiver_user_id"`
+	Timestamp      int64   `json:"timestamp"`
 	File           fs.File `json:"file"`
 }
 
@@ -53,8 +55,13 @@ func AddMessage(ctx *gin.Context) *output.RespStu {
 		fmt.Printf("[AddMessage-AddMessageToDB] err=%s\n", utils.GetStuStr(h.Err))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeDBError, h.Err.Error())
 	}
+	// 查最新消息
+	if h.GetNewInfo(); h.Err != nil {
+		fmt.Printf("[AddMessage-GetNewInfo] err=%s\n", utils.GetStuStr(h.Err))
+		return output.FailWithMsg(h.Ctx, output.StatusCodeDBError, h.Err.Error())
+	}
 
-	return output.Success(h.Ctx, nil)
+	return output.Success(h.Ctx, h.Resp)
 }
 
 func (h *AddMessageHandler) CheckReq() {
@@ -91,4 +98,24 @@ func (h *AddMessageHandler) AddMessageToDB() {
 		return
 	}
 	caller.LyhTestDB.Table(models.TableNameMessageSingle).Create(message)
+}
+
+func (h *AddMessageHandler) GetNewInfo() {
+	getMessageHandler := NewGetMessageHandler(h.Ctx)
+	optType := NewInfo
+	if h.Req.Timestamp == 0 { // 没有时间戳返回最新10条记录
+		optType = NewN
+	}
+	getMessageHandler.Req = GetMessageReq{
+		OptType:        int64(optType),
+		ReceiverUserID: h.Req.ReceiverUserID,
+		Timestamp:      h.Req.Timestamp,
+		N:              10,
+	}
+	// 加载数据
+	if getMessageHandler.LoadDataFromDB(); h.Err != nil {
+		fmt.Printf("[AddMessageHandler-GetMessage-Process] err=%s\n", h.Err)
+	}
+	getMessageHandler.PackData()
+	h.Resp = getMessageHandler.Resp
 }

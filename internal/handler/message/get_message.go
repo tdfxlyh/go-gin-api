@@ -62,14 +62,14 @@ type MsgItem struct {
 }
 
 func NewGetMessageHandler(ctx *gin.Context) *GetMessageHandler {
-	h := &GetMessageHandler{
+	return &GetMessageHandler{
 		Ctx:      ctx,
 		Req:      GetMessageReq{},
 		LastTime: utils.GetYearOf2000(),
+		Resp: GetMessageResp{
+			MsgList: make([]*MsgItem, 0),
+		},
 	}
-	h.Resp = GetMessageResp{}
-	h.Resp.MsgList = make([]*MsgItem, 0)
-	return h
 }
 
 func GetMessage(ctx *gin.Context) *output.RespStu {
