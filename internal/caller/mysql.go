@@ -2,6 +2,7 @@ package caller
 
 import (
 	"fmt"
+	"github.com/tdfxlyh/go-gin-api/internal/constdef"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -12,9 +13,7 @@ var (
 )
 
 func InitDB() {
-	//LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "127.0.0.1", 3306)
-	LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "121.40.249.44", 3306)
-	//LyhTestDB = InitDBDetail("root", "991113", "lyhtest", "192.168.23.128", 3306)
+	LyhTestDB = InitDBDetail(constdef.DBLyhTestUserName, constdef.DBLyhTestPassword, constdef.DBLyhTestDBName, constdef.DBLyhTestIp, constdef.DBLyhTestPort)
 
 	fmt.Println("success...")
 	return
