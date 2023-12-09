@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_user"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
@@ -17,28 +18,17 @@ const (
 
 type UserInfoHandler struct {
 	Ctx  *gin.Context
-	Req  UserInfoReq
-	Resp *UserInfoResp
+	Req  dto_user.UserInfoReq
+	Resp *dto_user.UserInfoResp
 
 	Err error
-}
-
-type UserInfoReq struct {
-	OptType int64 `json:"opt_type"`
-	UID     int64 `json:"uid"`
-}
-
-type UserInfoResp struct {
-	UID      int64  `json:"uid"`
-	UserName string `json:"user_name"`
-	Avatar   string `json:"avatar"`
 }
 
 func NewUserInfoHandler(ctx *gin.Context) *UserInfoHandler {
 	return &UserInfoHandler{
 		Ctx: ctx,
 
-		Resp: &UserInfoResp{},
+		Resp: &dto_user.UserInfoResp{},
 	}
 }
 
@@ -79,7 +69,7 @@ func (h *UserInfoHandler) GetData() {
 		h.Err = fmt.Errorf("user not found")
 		return
 	}
-	h.Resp = &UserInfoResp{
+	h.Resp = &dto_user.UserInfoResp{
 		UID:      userInfo.UID,
 		UserName: userInfo.UserName,
 		Avatar:   utils.GetPic(userInfo.Avatar),

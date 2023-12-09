@@ -5,13 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_message"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 )
 
 type OptMessageHandler struct {
 	Ctx *gin.Context
-	Req OptMessageReq
+	Req dto_message.OptMessageReq
 	Msg models.MessageSingle
 
 	Err error
@@ -22,11 +23,6 @@ const (
 	MsgDel      = 2 // 删除消息
 	MsgWithdraw = 3 // 撤回消息
 )
-
-type OptMessageReq struct {
-	OptType   int64 `json:"opt_type"`
-	MessageID int64 `json:"message_id"`
-}
 
 func NewOptMessageHandler(ctx *gin.Context) *OptMessageHandler {
 	return &OptMessageHandler{
