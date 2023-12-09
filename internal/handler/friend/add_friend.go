@@ -4,19 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_friend"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 )
 
 type AddFriendHandler struct {
 	Ctx *gin.Context
-	Req AddFriendReq
+	Req dto_friend.AddFriendReq
 
 	Err error
-}
-
-type AddFriendReq struct {
-	Phone string `json:"phone"`
 }
 
 func NewAddFriendHandler(ctx *gin.Context) *AddFriendHandler {

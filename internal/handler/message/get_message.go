@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_message"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
@@ -14,8 +15,8 @@ import (
 
 type GetMessageHandler struct {
 	Ctx  *gin.Context
-	Req  GetMessageReq
-	Resp GetMessageResp
+	Req  dto_message.GetMessageReq
+	Resp dto_message.GetMessageResp
 
 	LastTime            time.Time               // 上次的时间
 	OtherUserName       string                  // 对方昵称
@@ -35,39 +36,13 @@ const (
 	NewInfoCount = 5 // 新消息个数
 )
 
-type GetMessageReq struct {
-	OptType        int64 `json:"opt_type"`
-	ReceiverUserID int64 `json:"receiver_user_id"`
-	Timestamp      int64 `json:"timestamp"`
-	N              int64 `json:"n"`
-}
-
-type GetMessageResp struct {
-	UID      int64      `json:"uid"`
-	UserName string     `json:"user_name"`
-	MsgList  []*MsgItem `json:"msg_list"`
-	Count    int64      `json:"count"`
-}
-
-type MsgItem struct {
-	Id          int64  `json:"id"`
-	IsMe        bool   `json:"is_me"`
-	AvatarUrl   string `json:"avatar_url"`
-	MessageType int64  `json:"message_type"`
-	Content     string `json:"content"`
-	StdExtra    string `json:"std_extra"`
-	TimeStr     string `json:"time_str"`
-	Timestamp   int64  `json:"timestamp"` // 毫秒级别
-	WithDraw    int32  `json:"with_draw"` // 是否撤回
-}
-
 func NewGetMessageHandler(ctx *gin.Context) *GetMessageHandler {
 	return &GetMessageHandler{
 		Ctx:      ctx,
-		Req:      GetMessageReq{},
+		Req:      dto_message.GetMessageReq{},
 		LastTime: utils.GetYearOf2000(),
-		Resp: GetMessageResp{
-			MsgList: make([]*MsgItem, 0),
+		Resp: dto_message.GetMessageResp{
+			MsgList: make([]*dto_message.MsgItem, 0),
 		},
 	}
 }
@@ -227,7 +202,7 @@ func (h *GetMessageHandler) PackData() {
 			if (msg.SenderUserID == uctx.UID(h.Ctx) && msg.SenderStatusInfo == 1) || (msg.ReceiverUserID == uctx.UID(h.Ctx) && msg.ReceiverStatusInfo == 1) {
 				continue
 			}
-			msgItem := &MsgItem{
+			msgItem := &dto_message.MsgItem{
 				Id:          msg.ID,
 				IsMe:        false,
 				AvatarUrl:   h.OtherAvatar,

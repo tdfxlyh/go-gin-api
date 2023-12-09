@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_friend"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
@@ -14,27 +15,13 @@ import (
 
 type GetFriendListHandler struct {
 	Ctx  *gin.Context
-	Resp *GetFriendListResp
+	Resp *dto_friend.GetFriendListResp
 	Lock sync.RWMutex
 
-	FriendUserInfoMap map[int64]*UserItem
+	FriendUserInfoMap map[int64]*dto_friend.UserItem
 	FriendUserIDs     []int64
 
 	Err error
-}
-
-type GetFriendListResp struct {
-	UserList []*UserItem `json:"msg_list"`
-	Count    int64       `json:"count"`
-}
-
-type UserItem struct {
-	Id       int64  `json:"id"`
-	Name     string `json:"name"`
-	Avatar   string `json:"avatar"`
-	Pinyin   string `json:"pinyin"`
-	Count    int64  `json:"count"`
-	CountStr string `json:"count_str"`
 }
 
 func NewFriendListHandler(ctx *gin.Context) *GetFriendListHandler {
@@ -42,10 +29,10 @@ func NewFriendListHandler(ctx *gin.Context) *GetFriendListHandler {
 		Ctx:               ctx,
 		Lock:              sync.RWMutex{},
 		FriendUserIDs:     make([]int64, 0),
-		FriendUserInfoMap: make(map[int64]*UserItem),
+		FriendUserInfoMap: make(map[int64]*dto_friend.UserItem),
 
-		Resp: &GetFriendListResp{
-			UserList: make([]*UserItem, 0),
+		Resp: &dto_friend.GetFriendListResp{
+			UserList: make([]*dto_friend.UserItem, 0),
 		},
 	}
 }
@@ -77,7 +64,7 @@ func (h *GetFriendListHandler) GetFriends() {
 	}
 	for _, friend := range friendList {
 		h.FriendUserIDs = append(h.FriendUserIDs, friend.OtherUserID)
-		h.FriendUserInfoMap[friend.OtherUserID] = &UserItem{
+		h.FriendUserInfoMap[friend.OtherUserID] = &dto_friend.UserItem{
 			Id:   friend.OtherUserID,
 			Name: friend.Notes,
 		}

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_message"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
@@ -14,29 +15,13 @@ import (
 
 type GetMessageInfoListHandler struct {
 	Ctx  *gin.Context
-	Resp *GetMessageInfoListResp
+	Resp *dto_message.GetMessageInfoListResp
 	Lock sync.RWMutex
 
-	FriendUserInfoMap map[int64]*UserItem
+	FriendUserInfoMap map[int64]*dto_message.UserItem
 	FriendUserIDs     []int64
 
 	Err error
-}
-
-type GetMessageInfoListResp struct {
-	UserList []*UserItem `json:"msg_list"`
-	Count    int64       `json:"count"`
-}
-
-type UserItem struct {
-	Id        int64  `json:"id"`
-	Name      string `json:"name"`
-	Avatar    string `json:"avatar"`
-	Count     int64  `json:"count"`
-	CountStr  string `json:"count_str"`
-	Timestamp int64  `json:"timestamp"` // 毫秒级别
-	TimeStr   string `json:"time_str"`
-	Desc      string `json:"desc"` // 最新一句话
 }
 
 func NewGetMessageInfoListHandler(ctx *gin.Context) *GetMessageInfoListHandler {
@@ -44,10 +29,10 @@ func NewGetMessageInfoListHandler(ctx *gin.Context) *GetMessageInfoListHandler {
 		Ctx:               ctx,
 		Lock:              sync.RWMutex{},
 		FriendUserIDs:     make([]int64, 0),
-		FriendUserInfoMap: make(map[int64]*UserItem),
+		FriendUserInfoMap: make(map[int64]*dto_message.UserItem),
 
-		Resp: &GetMessageInfoListResp{
-			UserList: make([]*UserItem, 0),
+		Resp: &dto_message.GetMessageInfoListResp{
+			UserList: make([]*dto_message.UserItem, 0),
 		},
 	}
 }
@@ -80,7 +65,7 @@ func (h *GetMessageInfoListHandler) GetFriends() {
 	}
 	for _, friend := range GetMessageInfoList {
 		h.FriendUserIDs = append(h.FriendUserIDs, friend.OtherUserID)
-		h.FriendUserInfoMap[friend.OtherUserID] = &UserItem{
+		h.FriendUserInfoMap[friend.OtherUserID] = &dto_message.UserItem{
 			Id:   friend.OtherUserID,
 			Name: friend.Notes,
 		}

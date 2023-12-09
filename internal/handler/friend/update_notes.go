@@ -4,20 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_friend"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
 )
 
 type UpdateNotesHandler struct {
 	Ctx *gin.Context
-	Req UpdateNotesReq
+	Req dto_friend.UpdateNotesReq
 
 	Err error
-}
-
-type UpdateNotesReq struct {
-	UserID int64  `json:"user_id"`
-	Notes  string `json:"notes"`
 }
 
 func NewUpdateNotesHandler(ctx *gin.Context) *UpdateNotesHandler {

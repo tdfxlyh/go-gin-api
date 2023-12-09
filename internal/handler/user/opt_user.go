@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_user"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
@@ -13,16 +14,9 @@ import (
 
 type OptUserHandler struct {
 	Ctx *gin.Context
-	Req OptUserReq
+	Req dto_user.OptUserReq
 
 	Err error
-}
-
-type OptUserReq struct {
-	OptType  int64  `json:"opt_type"`
-	Avatar   string `json:"avatar"`
-	UserName string `json:"user_name"`
-	Password string `json:"password"`
 }
 
 const (

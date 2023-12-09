@@ -5,28 +5,20 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
+	"github.com/tdfxlyh/go-gin-api/internal/model/dto/dto_message"
 	"github.com/tdfxlyh/go-gin-api/internal/utils"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/uctx"
-	"io/fs"
 	"strings"
 	"time"
 )
 
 type AddMessageHandler struct {
 	Ctx  *gin.Context
-	Req  AddMessageReq
+	Req  dto_message.AddMessageReq
 	Resp interface{}
 
 	Err error
-}
-
-type AddMessageReq struct {
-	MessageType    int64   `json:"message_type"`
-	Content        string  `json:"content"`
-	ReceiverUserID int64   `json:"receiver_user_id"`
-	Timestamp      int64   `json:"timestamp"`
-	File           fs.File `json:"file"`
 }
 
 const (
@@ -108,7 +100,7 @@ func (h *AddMessageHandler) GetNewInfo() {
 		optType = NewInfo
 		getMessageHandler.LastTime = time.UnixMilli(h.Req.Timestamp)
 	}
-	getMessageHandler.Req = GetMessageReq{
+	getMessageHandler.Req = dto_message.GetMessageReq{
 		OptType:        int64(optType),
 		ReceiverUserID: h.Req.ReceiverUserID,
 		Timestamp:      h.Req.Timestamp,
