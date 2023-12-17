@@ -1,26 +1,25 @@
-package utils
+package cronloader
 
 import (
-	"github.com/tdfxlyh/go-gin-api/internal/cronloader"
 	"strings"
 )
 
 // CheckBadWords 检查是否包含敏感词
 func CheckBadWords(message string) bool {
-	return isContain(message, cronloader.BadWordsTrie)
+	return isContain(message, BadWordsTrie)
 }
 
 // CheckAndReplaceBadWords 检查是否包含敏感词并替换为*
 func CheckAndReplaceBadWords(message string) string {
-	return replaceBadWords(message, '*', cronloader.BadWordsTrie)
+	return replaceBadWords(message, '*', BadWordsTrie)
 }
 
 // CheckAndReplaceBadWordsWithSep 检查是否包含敏感词并替换为{sep}
 func CheckAndReplaceBadWordsWithSep(message string, sep rune) string {
-	return replaceBadWords(message, sep, cronloader.BadWordsTrie)
+	return replaceBadWords(message, sep, BadWordsTrie)
 }
 
-func isContain(message string, root *cronloader.BadWordsTrieNode) bool {
+func isContain(message string, root *BadWordsTrieNode) bool {
 	message = strings.ToLower(message)
 	runes := []rune(message)
 	for i := 0; i < len(runes); i++ {
@@ -42,7 +41,7 @@ func isContain(message string, root *cronloader.BadWordsTrieNode) bool {
 	return false
 }
 
-func replaceBadWords(message string, sep rune, root *cronloader.BadWordsTrieNode) string {
+func replaceBadWords(message string, sep rune, root *BadWordsTrieNode) string {
 	message = strings.ToLower(message)
 	runes := []rune(message)
 	for i := 0; i < len(runes); i++ {

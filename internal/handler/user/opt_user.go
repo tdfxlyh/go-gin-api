@@ -39,7 +39,7 @@ func OptUser(ctx *gin.Context) *output.RespStu {
 	}
 	// 更新数据
 	if h.UpdateUserInfo(); h.Err != nil {
-		fmt.Printf("[OptUser-UpdateUserInfo] err=%s\n", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("[OptUser-UpdateUserInfo] err=%s\n", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeDBError)
 	}
 	return output.Success(h.Ctx, nil)

@@ -30,7 +30,7 @@ func Register(ctx *gin.Context) *output.RespStu {
 	h := NewRegisterHandler(ctx)
 	// 校验参数
 	if msg := h.CheckReq(); msg != "" {
-		fmt.Println(fmt.Sprintf("[Register-CheckReq] params fail, err=%s", msg))
+		caller.Logger.Warn(fmt.Sprintf("[Register-CheckReq] params fail, err=%s", msg))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeParamsError, msg)
 	}
 	// 判断用户是否已经存在
@@ -39,7 +39,7 @@ func Register(ctx *gin.Context) *output.RespStu {
 	}
 	// 创建用户
 	if h.CreateUser(); h.Err != nil {
-		fmt.Println(fmt.Sprintf("[Register-CreateUser] fail, err=%s", h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[Register-CreateUser] fail, err=%s", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeSeverException)
 	}
 	return output.Success(h.Ctx, "注册成功")
@@ -49,7 +49,7 @@ func (h *RegisterHandler) CheckReq() string {
 	var reqUser = models.User{}
 	h.Ctx.Bind(&reqUser)
 
-	fmt.Printf("%s", utils.GetStuStr(reqUser))
+	caller.Logger.Info(utils.GetStuStr(reqUser))
 
 	//获取参数
 	h.UserName = reqUser.UserName

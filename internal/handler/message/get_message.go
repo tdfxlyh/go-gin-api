@@ -51,12 +51,12 @@ func GetMessage(ctx *gin.Context) *output.RespStu {
 	h := NewGetMessageHandler(ctx)
 	// 校验参数
 	if h.CheckReq(); h.Err != nil {
-		fmt.Printf("[GetMessage-CheckReq] err=%s\n", utils.GetStuStr(h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[GetMessage-CheckReq] err=%s\n", utils.GetStuStr(h.Err)))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeParamsError, h.Err.Error())
 	}
 	// 加载数据
 	if h.LoadDataFromDB(); h.Err != nil {
-		fmt.Printf("[GetMessage-Process] err=%s\n", utils.GetStuStr(h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[GetMessage-Process] err=%s\n", utils.GetStuStr(h.Err)))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeSeverException, h.Err.Error())
 	}
 	h.PackData()

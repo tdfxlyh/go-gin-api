@@ -8,14 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	LyhTestDB *gorm.DB
-)
-
 func InitDB() {
 	LyhTestDB = InitDBDetail(constdef.DBLyhTestUserName, constdef.DBLyhTestPassword, constdef.DBLyhTestDBName, constdef.DBLyhTestIp, constdef.DBLyhTestPort)
 
-	fmt.Println("success...")
+	Logger.Info("db init success...")
 	return
 }
 
@@ -23,6 +19,7 @@ func InitDBDetail(username, password, dbname, ip string, port int64) *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", username, password, ip, port, dbname)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
+		Logger.Error("db init fail...")
 		panic(err)
 	}
 	return db

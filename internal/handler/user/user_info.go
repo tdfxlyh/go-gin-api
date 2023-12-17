@@ -36,11 +36,11 @@ func UserInfo(ctx *gin.Context) *output.RespStu {
 	h := NewUserInfoHandler(ctx)
 
 	if h.CheckReq(); h.Err != nil {
-		fmt.Println(fmt.Sprintf("[UserInfo-CheckReq] fail, err=%s", h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[UserInfo-CheckReq] fail, err=%s", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	if h.GetData(); h.Err != nil {
-		fmt.Println(fmt.Sprintf("[UserInfo-GetData] fail, err=%s", h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[UserInfo-GetData] fail, err=%s", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeDBError)
 	}
 	return output.Success(ctx, h.Resp)
@@ -49,7 +49,7 @@ func UserInfo(ctx *gin.Context) *output.RespStu {
 func (h *UserInfoHandler) CheckReq() {
 	h.Ctx.Bind(&h.Req)
 	if h.Req.OptType != UserInfoSelf && h.Req.OptType != UserInfoOther {
-		h.Err = fmt.Errorf("opt_type is err")
+		h.Err = fmt.Errorf(fmt.Sprintf("opt_type is err, opt_type=%d", h.Req.OptType))
 		return
 	}
 	if h.Req.OptType == UserInfoOther && h.Req.UID == 0 {
