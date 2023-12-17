@@ -7,7 +7,6 @@ import (
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
 	"github.com/tdfxlyh/go-gin-api/internal/utils/output"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 )
 
 type LoginHandler struct {
@@ -33,7 +32,7 @@ func Login(ctx *gin.Context) *output.RespStu {
 	h := NewLoginHandler(ctx)
 
 	if h.CheckReq(); h.Err != nil {
-		fmt.Println(fmt.Sprintf("[Login-CheckReq] fail, err=%s", h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[Login-CheckReq] fail, err=%s", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeParamsError)
 	}
 	if h.CheckDB(); h.Err != nil {
@@ -41,7 +40,7 @@ func Login(ctx *gin.Context) *output.RespStu {
 	}
 	// 获取token
 	if h.PackToken(); h.Err != nil {
-		fmt.Println(fmt.Sprintf("[Login-GetToken] err=%s", h.Err))
+		caller.Logger.Warn(fmt.Sprintf("[Login-GetToken] err=%s", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeSeverException)
 	}
 	return output.Success(h.Ctx, h.Resp)
@@ -73,7 +72,7 @@ func (h *LoginHandler) CheckDB() {
 	}
 	// 判断密码是否正确
 	if err := bcrypt.CompareHashAndPassword([]byte(h.DBUser.Password), []byte(h.Password)); err != nil {
-		fmt.Printf("err=%s", err)
+		caller.Logger.Warn(fmt.Sprintf("err=%s", err))
 		h.Err = fmt.Errorf("password is error")
 		return
 	}
@@ -83,7 +82,7 @@ func (h *LoginHandler) PackToken() {
 	token := ""
 	token, h.Err = caller.ReleaseToken(h.DBUser)
 	if h.Err != nil {
-		log.Printf("token generate error: %v", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("token generate error: %v", h.Err))
 		return
 	}
 	h.Resp = map[string]interface{}{

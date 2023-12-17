@@ -59,7 +59,7 @@ func (h *GetFriendListHandler) GetFriends() {
 	friendList := make([]models.FriendRelation, 0)
 	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameFriendRelation).Where("rela_status=2 and user_id=? and status=0", uctx.UID(h.Ctx)).Find(&friendList).Error
 	if h.Err != nil {
-		fmt.Printf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err))
 		return
 	}
 	for _, friend := range friendList {
@@ -92,7 +92,7 @@ func (h *GetFriendListHandler) GetUsersInfo() {
 	userList := make([]models.User, 0)
 	h.Err = caller.LyhTestDB.Debug().Table(models.TableNameUser).Where("uid in (?) and status=0", h.FriendUserIDs).Find(&userList).Error
 	if h.Err != nil {
-		fmt.Printf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("[GetFriendListHandler-GetFriends] db fail, err=%s\n", h.Err))
 		return
 	}
 	for _, user := range userList {

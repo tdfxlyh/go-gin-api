@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
@@ -15,8 +14,6 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// 获取 authorization header
 		tokenString := ctx.GetHeader("Authorization")
-
-		fmt.Print("请求token", tokenString)
 
 		//validate token formate
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {

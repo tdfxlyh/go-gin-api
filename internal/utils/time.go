@@ -1,6 +1,9 @@
 package utils
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // GetTodayMidnight 获取午夜0点的时间
 func GetTodayMidnight() time.Time {
@@ -34,4 +37,12 @@ func GetYearOf2000() time.Time {
 func IsTimeDifferenceThanNMinute(t1, t2 time.Time, n int64) bool {
 	timeDifference := t1.Sub(t2)
 	return timeDifference.Minutes() > 1
+}
+
+// GetCurrentDate 获取当前年月日
+func GetCurrentDate() string {
+	currentTime := time.Now()
+	year, month, day := currentTime.Date()
+	dateString := fmt.Sprintf("%d-%02d-%02d", year, month, day)
+	return dateString
 }

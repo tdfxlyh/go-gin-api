@@ -11,3 +11,7 @@ const (
 	DBLyhTestIp       = "127.0.0.1" // "127.0.0.1" "192.168.23.128"
 	DBLyhTestPort     = 3306
 )
+
+const (
+	LogPath = "logs"
+)

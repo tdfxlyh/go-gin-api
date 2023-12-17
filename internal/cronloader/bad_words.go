@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/tdfxlyh/go-gin-api/dal/models"
 	"github.com/tdfxlyh/go-gin-api/internal/caller"
-	"log"
 )
 
 func getBadWordsAndInitBadWordsTrie() error {
@@ -22,7 +21,7 @@ func getBadWordsFromDB() ([]string, error) {
 	badWords := make([]*models.BadWord, 0)
 	caller.LyhTestDB.Debug().Table(models.TableNameBadWord).Where("status=0").Find(&badWords)
 	if badWords == nil {
-		log.Println("[getBadWordsFromDB] badWords is nil.")
+		caller.Logger.Info("[getBadWordsFromDB] badWords is nil.")
 		return nil, fmt.Errorf("badWords is nil")
 	}
 	badWordsList := make([]string, 0)
@@ -32,7 +31,7 @@ func getBadWordsFromDB() ([]string, error) {
 		}
 		badWordsList = append(badWordsList, item.Content)
 	}
-	log.Printf("[getBadWordsList] badWordsList=%v", badWordsList)
+	caller.Logger.Info(fmt.Sprintf("[getBadWordsList] badWordsList=%v", badWordsList))
 	return badWordsList, nil
 }
 

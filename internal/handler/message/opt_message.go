@@ -38,7 +38,7 @@ func OptMessage(ctx *gin.Context) *output.RespStu {
 	}
 	// 操作消息
 	if h.OptMsg(); h.Err != nil {
-		fmt.Printf("[OptMessage] db fail, err=%s\n", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("[OptMessage] db fail, err=%s\n", h.Err))
 		return output.Fail(h.Ctx, output.StatusCodeDBError)
 	}
 	return output.Success(h.Ctx, nil)

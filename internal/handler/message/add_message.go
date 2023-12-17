@@ -39,18 +39,18 @@ func AddMessage(ctx *gin.Context) *output.RespStu {
 	h := NewAddMessageHandler(ctx)
 	// 校验参数
 	if h.CheckReq(); h.Err != nil {
-		fmt.Printf("[AddMessage-CheckReq] err=%s\n", utils.GetStuStr(h.Err))
+		caller.Logger.Info(fmt.Sprintf("[AddMessage-CheckReq] err=%s\n", utils.GetStuStr(h.Err)))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeParamsError, h.Err.Error())
 	}
 
 	// 写入数据
 	if h.AddMessageToDB(); h.Err != nil {
-		fmt.Printf("[AddMessage-AddMessageToDB] err=%s\n", utils.GetStuStr(h.Err))
+		caller.Logger.Info(fmt.Sprintf("[AddMessage-AddMessageToDB] err=%s\n", utils.GetStuStr(h.Err)))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeDBError, h.Err.Error())
 	}
 	// 查最新消息
 	if h.GetNewInfo(); h.Err != nil {
-		fmt.Printf("[AddMessage-GetNewInfo] err=%s\n", utils.GetStuStr(h.Err))
+		caller.Logger.Info(fmt.Sprintf("[AddMessage-GetNewInfo] err=%s\n", utils.GetStuStr(h.Err)))
 		return output.FailWithMsg(h.Ctx, output.StatusCodeDBError, h.Err.Error())
 	}
 
@@ -108,7 +108,7 @@ func (h *AddMessageHandler) GetNewInfo() {
 	}
 	// 加载数据
 	if getMessageHandler.LoadDataFromDB(); h.Err != nil {
-		fmt.Printf("[AddMessageHandler-GetMessage-Process] err=%s\n", h.Err)
+		caller.Logger.Warn(fmt.Sprintf("[AddMessageHandler-GetMessage-Process] err=%s\n", h.Err))
 	}
 	getMessageHandler.PackData()
 	h.Resp = getMessageHandler.Resp
